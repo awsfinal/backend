@@ -3,9 +3,13 @@ const express = require('express');
 const cors = require('cors');
 const multer = require('multer');
 const path = require('path');
+const BedrockService = require('./services/bedrockService');
 
 const app = express();
-const PORT = process.env.PORT || 5002;
+const PORT = process.env.PORT || 5003;
+
+// BedrockService 인스턴스 생성
+const bedrockService = new BedrockService();
 
 // 미들웨어
 app.use(cors());
@@ -163,7 +167,160 @@ const gyeongbokgungBuildings = {
   }
 };
 
-// 두 좌표 간의 거리 계산 (미터 단위)
+// 건물 폴리곤 데이터 (프론트엔드와 동일)
+const buildingPolygons = [
+  {
+    id: 'eungjidang',
+    name: '응지당',
+    nameEn: 'Eungjidang',
+    nw: [37.579595432157966, 126.97667876079947],
+    se: [37.57955041200325, 126.9768287778653]
+  },
+  {
+    id: 'gyeongseongjeon',
+    name: '경성전',
+    nameEn: 'Gyeongseongjeon',
+    nw: [37.579534628470896, 126.97674670564773],
+    se: [37.5793566949806, 126.97681185646736]
+  },
+  {
+    id: 'gangnyeongjeon',
+    name: '강녕전',
+    nameEn: 'Gangnyeongjeon',
+    nw: [37.57947608222901, 126.97684012187166],
+    se: [37.57938156638848, 126.97729581968161]
+  },
+  {
+    id: 'heumgyeonggak',
+    name: '흠경각',
+    nameEn: 'Heumgyeonggak',
+    nw: [37.57972153988065, 126.97652022734192],
+    se: [37.5796810316051, 126.97670420635653]
+  },
+  {
+    id: 'gyotaejeon',
+    name: '교태전',
+    nameEn: 'Gyotaejeon',
+    nw: [37.57989055382053, 126.97691358021297],
+    se: [37.57982529770065, 126.97725323109862]
+  },
+  {
+    id: 'sajeongjeon',
+    name: '사정전',
+    nameEn: 'Sajeongjeon',
+    nw: [37.579045873149205, 126.97691950147181],
+    se: [37.57898059787739, 126.97716009067494]
+  },
+  {
+    id: 'manchunjeon',
+    name: '만춘전',
+    nameEn: 'Manchunjeon',
+    nw: [37.579057211291925, 126.97731006930693],
+    se: [37.57899192120716, 126.97747707237069]
+  },
+  {
+    id: 'geungjeongjeon',
+    name: '긍정전',
+    nameEn: 'Geungjeongjeon',
+    nw: [37.57881379918469, 126.97657428653042],
+    se: [37.57796927076278, 126.9773613427869]
+  },
+  {
+    id: 'gyejodang',
+    name: '계조당',
+    nameEn: 'Gyejodang',
+    nw: [37.57794005256122, 126.97769814362223],
+    se: [37.57773738094997, 126.97797556142645]
+  }
+];
+
+// 점이 사각형 폴리곤 안에 있는지 확인하는 함수
+function isPointInPolygon(lat, lng, polygon) {
+  // GPS 오차를 고려한 여유 범위 (약 5미터)
+  const buffer = 0.00005; // 약 5미터 정도의 여유
+
+  // 북서(NW)와 남동(SE) 좌표를 이용한 사각형 영역 체크 (버퍼 적용)
+  const northLat = polygon.nw[0] + buffer;  // 북쪽 위도 (확장)
+  const westLng = polygon.nw[1] - buffer;   // 서쪽 경도 (확장)
+  const southLat = polygon.se[0] - buffer;  // 남쪽 위도 (확장)
+  const eastLng = polygon.se[1] + buffer;   // 동쪽 경도 (확장)
+
+  console.log(`🔍 폴리곤 체크: ${polygon.name}`);
+  console.log(`   GPS: ${lat.toFixed(6)}, ${lng.toFixed(6)}`);
+
+  const latInRange = lat <= northLat && lat >= southLat;
+  const lngInRange = lng >= westLng && lng <= eastLng;
+
+  const isInside = latInRange && lngInRange;
+  console.log(`   결과: ${isInside ? '✅ 내부' : '❌ 외부'}`);
+
+  return isInside;
+}
+
+// GPS 위치로 해당하는 건물 폴리곤 찾기
+function findBuildingByPolygon(lat, lng) {
+  console.log(`🏛️ 폴리곤 검색: 위치 ${lat.toFixed(6)}, ${lng.toFixed(6)}`);
+
+  for (const polygon of buildingPolygons) {
+    if (isPointInPolygon(lat, lng, polygon)) {
+      console.log(`🎯 폴리곤 매칭 성공: ${polygon.name}`);
+      
+      // 폴리곤 ID를 기존 건물 데이터 ID로 매핑
+      const buildingId = mapPolygonToBuilding(polygon.id);
+      const buildingData = gyeongbokgungBuildings[buildingId];
+      
+      if (buildingData) {
+        return {
+          ...buildingData,
+          distance: 0, // 폴리곤 안에 있으므로 거리는 0
+          isInPolygon: true,
+          polygonData: polygon
+        };
+      } else {
+        // 기본 건물 정보 생성
+        return {
+          id: polygon.id,
+          name: polygon.name,
+          nameEn: polygon.nameEn,
+          description: `${polygon.name}은 경복궁의 중요한 건물 중 하나입니다.`,
+          detailedDescription: `${polygon.name}은 조선시대의 건축 양식을 잘 보여주는 문화재입니다.`,
+          coordinates: {
+            lat: (polygon.nw[0] + polygon.se[0]) / 2,
+            lng: (polygon.nw[1] + polygon.se[1]) / 2
+          },
+          buildYear: '조선시대',
+          culturalProperty: '문화재',
+          features: ['전통 건축', '경복궁 건물'],
+          distance: 0,
+          isInPolygon: true,
+          polygonData: polygon
+        };
+      }
+    }
+  }
+
+  console.log('❌ 해당하는 폴리곤을 찾을 수 없습니다.');
+  return null;
+}
+
+// 폴리곤 ID를 기존 건물 데이터 ID로 매핑
+function mapPolygonToBuilding(polygonId) {
+  const mapping = {
+    'eungjidang': 'eungjidang',
+    'gyeongseongjeon': 'gyeongseungjeon', // 경성전
+    'gangnyeongjeon': 'gangnyeongjeon',
+    'heumgyeonggak': 'heumgyeonggak',
+    'gyotaejeon': 'gyotaejeon',
+    'sajeongjeon': 'sajeongjeon',
+    'manchunjeon': 'manchunjeon',
+    'geungjeongjeon': 'geunjeongjeon', // 긍정전 -> 근정전
+    'gyejodang': 'gyejodang'
+  };
+
+  return mapping[polygonId] || polygonId;
+}
+
+// 두 좌표 간의 거리 계산 (미터 단위) - 폴백용
 function calculateDistance(lat1, lng1, lat2, lng2) {
   const R = 6371e3; // 지구 반지름 (미터)
   const φ1 = lat1 * Math.PI / 180;
@@ -177,36 +334,6 @@ function calculateDistance(lat1, lng1, lat2, lng2) {
   const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 
   return R * c;
-}
-
-// 위치 기반 건물 식별 (가장 가까운 건물 반환)
-function identifyBuildingByLocation(lat, lng) {
-  console.log(`위치 분석: ${lat}, ${lng}`);
-
-  let closestBuilding = null;
-  let closestDistance = Infinity;
-
-  // 모든 건물과의 거리 계산
-  for (const [, building] of Object.entries(gyeongbokgungBuildings)) {
-    const distance = calculateDistance(lat, lng, building.area.center.lat, building.area.center.lng);
-    console.log(`${building.name}까지의 거리: ${Math.round(distance)}m`);
-
-    if (distance < closestDistance) {
-      closestDistance = distance;
-      closestBuilding = building;
-    }
-  }
-
-  if (closestBuilding) {
-    console.log(`가장 가까운 건물: ${closestBuilding.name} (${Math.round(closestDistance)}m)`);
-    return {
-      ...closestBuilding,
-      distance: Math.round(closestDistance)
-    };
-  }
-
-  console.log('건물을 찾을 수 없습니다.');
-  return null;
 }
 
 // 경복궁 영역 확인
@@ -250,8 +377,8 @@ app.post('/api/check-location', (req, res) => {
     const lat = parseFloat(latitude);
     const lng = parseFloat(longitude);
 
-    // 가장 가까운 건물 식별 (위치 제한 없음)
-    const building = identifyBuildingByLocation(lat, lng);
+    // 폴리곤 기반 건물 식별
+    const building = findBuildingByPolygon(lat, lng);
     const isInside = isInGyeongbokgung(lat, lng);
 
     if (building) {
@@ -313,8 +440,8 @@ app.post('/api/analyze-photo', upload.single('photo'), async (req, res) => {
 
     console.log(`사진 분석 요청: ${req.file.filename}, 위치: ${lat}, ${lng}`);
 
-    // 위치 기반 건물 식별 (위치 제한 없음)
-    const building = identifyBuildingByLocation(lat, lng);
+    // 폴리곤 기반 건물 식별
+    const building = findBuildingByPolygon(lat, lng);
     const isInside = isInGyeongbokgung(lat, lng);
 
     if (building) {
@@ -412,6 +539,89 @@ app.get('/api/buildings', (req, res) => {
   }
 });
 
+// 건물 철학 생성 API
+app.post('/api/philosophy/:id', async (req, res) => {
+  try {
+    const buildingId = req.params.id;
+    const { buildingName, locationInfo, userContext } = req.body;
+
+    console.log(`🏛️ 철학 생성 요청: ${buildingId} (${buildingName})`);
+
+    // 건물 정보 조회 (기존 데이터 우선, 없으면 폴리곤 데이터에서 생성)
+    let building = gyeongbokgungBuildings[buildingId];
+    
+    if (!building) {
+      // 폴리곤 데이터에서 건물 정보 찾기
+      const polygon = buildingPolygons.find(p => p.id === buildingId);
+      if (polygon) {
+        building = {
+          id: polygon.id,
+          name: polygon.name,
+          nameEn: polygon.nameEn,
+          description: `${polygon.name}은 경복궁의 중요한 건물 중 하나입니다.`,
+          detailedDescription: `${polygon.name}은 조선시대의 건축 양식을 잘 보여주는 문화재입니다.`,
+          coordinates: {
+            lat: (polygon.nw[0] + polygon.se[0]) / 2,
+            lng: (polygon.nw[1] + polygon.se[1]) / 2
+          },
+          buildYear: '조선시대',
+          culturalProperty: '문화재',
+          features: ['전통 건축', '경복궁 건물']
+        };
+        console.log(`📍 폴리곤에서 건물 정보 생성: ${building.name}`);
+      }
+    }
+    
+    if (!building) {
+      return res.status(404).json({
+        success: false,
+        error: '건물 정보를 찾을 수 없습니다.'
+      });
+    }
+
+    // 기본 위치 정보 설정
+    const defaultLocationInfo = {
+      address: '서울특별시 종로구 사직로 161 (경복궁)',
+      latitude: building.coordinates.lat,
+      longitude: building.coordinates.lng,
+      distanceToBuilding: 0,
+      heading: null,
+      ...locationInfo
+    };
+
+    // BedrockService를 통해 철학 생성
+    const philosophyResult = await bedrockService.generateBuildingPhilosophy(
+      building,
+      defaultLocationInfo,
+      userContext || {}
+    );
+
+    console.log(`✅ 철학 생성 완료: ${buildingName}`);
+
+    res.json(philosophyResult);
+
+  } catch (error) {
+    console.error('❌ 철학 생성 오류:', error);
+    
+    // 오류 발생 시 폴백 응답
+    const building = gyeongbokgungBuildings[req.params.id];
+    const buildingName = req.body.buildingName || building?.name || '건물';
+    
+    res.status(500).json({
+      success: false,
+      error: '철학 생성 중 오류가 발생했습니다.',
+      buildingName: buildingName,
+      content: {
+        philosophy: `${buildingName}의 건축 철학을 불러오는 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.`,
+        history: `${buildingName}의 역사적 맥락을 불러오는 중 오류가 발생했습니다.`,
+        culture: `${buildingName}의 문화적 가치를 불러오는 중 오류가 발생했습니다.`,
+        modern: `${buildingName}의 현대적 해석을 불러오는 중 오류가 발생했습니다.`
+      },
+      fallback: true
+    });
+  }
+});
+
 // React 라우터를 위한 catch-all 핸들러 (API 라우트 이후에 배치)
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, '../front/build', 'index.html'));
@@ -431,4 +641,5 @@ app.listen(PORT, () => {
   console.log(`- POST /api/analyze-photo : 사진 분석`);
   console.log(`- GET /api/building/:id : 건물 정보 조회`);
   console.log(`- GET /api/buildings : 모든 건물 목록`);
+  console.log(`- POST /api/philosophy/:id : 건물 철학 생성 (AWS Bedrock)`);
 });
