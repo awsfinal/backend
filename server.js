@@ -3,6 +3,7 @@ const express = require('express');
 const cors = require('cors');
 const multer = require('multer');
 const path = require('path');
+const axios = require('axios');
 const BedrockService = require('./services/bedrockService');
 
 const app = express();
@@ -164,6 +165,167 @@ const gyeongbokgungBuildings = {
     buildYear: '1395년 (태조 4년)',
     culturalProperty: '보물 제1761호',
     features: ['왕비의 침전', '꽃담', '여성 공간']
+  },
+
+  // 메인페이지에서 추가된 주요 문화재들
+  changdeokgung: {
+    id: 'changdeokgung',
+    name: '창덕궁',
+    nameEn: 'Changdeokgung Palace',
+    description: '조선왕조의 이궁, 유네스코 세계문화유산입니다.',
+    detailedDescription: '창덕궁은 1405년 태종에 의해 경복궁의 이궁으로 건립되었습니다. 조선시대 왕들이 가장 오랫동안 거처했던 궁궐로, 자연과 조화를 이룬 한국 전통 건축의 백미입니다. 특히 후원(비원)은 한국 전통 조경의 극치를 보여주며, 1997년 유네스코 세계문화유산으로 등재되었습니다.',
+    coordinates: {
+      lat: 37.5794,
+      lng: 126.9910
+    },
+    images: ['/heritage/changdeokgung.jpg'],
+    buildYear: '1405년 (태종 5년)',
+    culturalProperty: '사적 제122호 (유네스코 세계문화유산)',
+    features: ['이궁', '후원', '유네스코 세계문화유산', '자연과의 조화']
+  },
+
+  deoksugung: {
+    id: 'deoksugung',
+    name: '덕수궁',
+    nameEn: 'Deoksugung Palace',
+    description: '대한제국의 황궁입니다.',
+    detailedDescription: '덕수궁은 조선시대에는 월산대군의 저택이었으나, 임진왜란 이후 선조가 거처하면서 궁궐이 되었습니다. 고종이 아관파천에서 환궁한 후 거처했던 곳으로, 대한제국의 황궁 역할을 했습니다. 서양식 건물과 전통 건물이 조화를 이루는 독특한 궁궐입니다.',
+    coordinates: {
+      lat: 37.5658,
+      lng: 126.9751
+    },
+    images: ['/heritage/deoksugung.jpg'],
+    buildYear: '1593년 (선조 26년)',
+    culturalProperty: '사적 제124호',
+    features: ['대한제국 황궁', '서양식 건물', '근대사의 현장']
+  },
+
+  changgyeonggung: {
+    id: 'changgyeonggung',
+    name: '창경궁',
+    nameEn: 'Changgyeonggung Palace',
+    description: '조선왕조의 이궁입니다.',
+    detailedDescription: '창경궁은 1484년 성종이 세조의 비 정희왕후, 덕종의 비 소혜왕후, 예종의 비 안순왕후를 모시기 위해 건립한 궁궐입니다. 창덕궁과 하나의 궁역을 이루어 "동궐"이라 불렸으며, 조선 왕실의 생활공간으로 사용되었습니다.',
+    coordinates: {
+      lat: 37.5792,
+      lng: 126.9950
+    },
+    images: ['/heritage/changgyeonggung.jpg'],
+    buildYear: '1484년 (성종 15년)',
+    culturalProperty: '사적 제123호',
+    features: ['이궁', '동궐', '왕실 생활공간']
+  },
+
+  jongmyo: {
+    id: 'jongmyo',
+    name: '종묘',
+    nameEn: 'Jongmyo Shrine',
+    description: '조선왕조 왕과 왕비의 신주를 모신 사당입니다.',
+    detailedDescription: '종묘는 조선왕조 역대 왕과 왕비의 신주를 모신 유교 사당입니다. 1394년 태조가 조선을 건국하면서 창건했으며, 조선왕조 500년간 종묘제례가 거행된 신성한 공간입니다. 1995년 유네스코 세계문화유산으로 등재되었습니다.',
+    coordinates: {
+      lat: 37.5744,
+      lng: 126.9944
+    },
+    images: ['/heritage/jongmyo.jpg'],
+    buildYear: '1394년 (태조 3년)',
+    culturalProperty: '사적 제125호 (유네스코 세계문화유산)',
+    features: ['왕실 사당', '종묘제례', '유네스코 세계문화유산']
+  },
+
+  namdaemun: {
+    id: 'namdaemun',
+    name: '숭례문 (남대문)',
+    nameEn: 'Sungnyemun Gate',
+    description: '서울 성곽의 정문입니다.',
+    detailedDescription: '숭례문은 조선 태조 5년(1396년)에 축조된 서울 성곽의 정문입니다. 국보 제1호로 지정된 우리나라 최고의 문화재 중 하나로, 조선시대 한양 도성의 4대문 중 가장 큰 문입니다. 2008년 화재로 소실되었으나 2013년 복원되었습니다.',
+    coordinates: {
+      lat: 37.5597,
+      lng: 126.9756
+    },
+    images: ['/heritage/namdaemun.jpg'],
+    buildYear: '1396년 (태조 5년)',
+    culturalProperty: '국보 제1호',
+    features: ['서울 성곽', '정문', '국보 제1호']
+  },
+
+  dongdaemun: {
+    id: 'dongdaemun',
+    name: '흥인지문 (동대문)',
+    nameEn: 'Heunginjimun Gate',
+    description: '서울 성곽의 동문입니다.',
+    detailedDescription: '흥인지문은 조선 태조 5년(1396년)에 축조된 서울 성곽의 동문입니다. 다른 성문과 달리 옹성(甕城)이 설치되어 있어 독특한 구조를 가지고 있습니다. 보물 제1호로 지정되어 있으며, 현재까지 원형이 잘 보존되어 있는 조선시대 성문입니다.',
+    coordinates: {
+      lat: 37.5711,
+      lng: 126.9946
+    },
+    images: ['/heritage/dongdaemun.jpg'],
+    buildYear: '1396년 (태조 5년)',
+    culturalProperty: '보물 제1호',
+    features: ['서울 성곽', '동문', '옹성 구조']
+  },
+
+  bulguksa: {
+    id: 'bulguksa',
+    name: '불국사',
+    nameEn: 'Bulguksa Temple',
+    description: '신라 불교 예술의 걸작입니다.',
+    detailedDescription: '불국사는 신라 경덕왕 10년(751년)에 창건된 사찰로, 신라 불교 예술의 정수를 보여주는 대표적인 문화재입니다. 다보탑과 석가탑, 청운교와 백운교 등 국보급 문화재들이 조화롭게 배치되어 있으며, 1995년 석굴암과 함께 유네스코 세계문화유산으로 등재되었습니다.',
+    coordinates: {
+      lat: 35.7898,
+      lng: 129.3320
+    },
+    images: ['/heritage/bulguksa.jpg'],
+    buildYear: '751년 (경덕왕 10년)',
+    culturalProperty: '사적 제502호 (유네스코 세계문화유산)',
+    features: ['신라 불교 예술', '다보탑', '석가탑', '유네스코 세계문화유산']
+  },
+
+  seokguram: {
+    id: 'seokguram',
+    name: '석굴암',
+    nameEn: 'Seokguram Grotto',
+    description: '신라 석굴 예술의 최고봉입니다.',
+    detailedDescription: '석굴암은 신라 경덕왕 10년(751년)에 창건된 석굴 사원으로, 신라 불교 조각 예술의 최고 걸작입니다. 본존불을 중심으로 보살상과 제자상들이 조화롭게 배치되어 있으며, 건축과 조각이 완벽하게 결합된 동양 최고의 석굴 사원입니다.',
+    coordinates: {
+      lat: 35.7948,
+      lng: 129.3469
+    },
+    images: ['/heritage/seokguram.jpg'],
+    buildYear: '751년 (경덕왕 10년)',
+    culturalProperty: '국보 제24호 (유네스코 세계문화유산)',
+    features: ['석굴 사원', '본존불', '신라 조각 예술', '유네스코 세계문화유산']
+  },
+
+  haeinsa: {
+    id: 'haeinsa',
+    name: '해인사',
+    nameEn: 'Haeinsa Temple',
+    description: '팔만대장경을 보관한 사찰입니다.',
+    detailedDescription: '해인사는 신라 애장왕 3년(802년)에 창건된 사찰로, 팔만대장경을 보관하고 있는 것으로 유명합니다. 장경판전에 보관된 팔만대장경은 현존하는 세계 최고(最古)의 대장경으로, 1995년 유네스코 세계문화유산으로 등재되었습니다.',
+    coordinates: {
+      lat: 35.8014,
+      lng: 128.0981
+    },
+    images: ['/heritage/haeinsa.jpg'],
+    buildYear: '802년 (애장왕 3년)',
+    culturalProperty: '유네스코 세계문화유산',
+    features: ['팔만대장경', '장경판전', '유네스코 세계문화유산']
+  },
+
+  gyeongbokgung: {
+    id: 'gyeongbokgung',
+    name: '경복궁',
+    nameEn: 'Gyeongbokgung Palace',
+    description: '조선왕조 제일의 법궁입니다.',
+    detailedDescription: '경복궁은 1395년 태조 이성계가 조선왕조를 건국한 후 새로운 왕조의 법궁으로 지은 궁궐입니다. "큰 복을 빌어 나라가 번영한다"는 의미의 경복궁은 조선 왕조 600년 역사와 함께한 대표적인 궁궐로, 근정전, 경회루, 향원정 등 아름다운 건축물들이 조화를 이루고 있습니다.',
+    coordinates: {
+      lat: 37.5788,
+      lng: 126.9770
+    },
+    images: ['/heritage/gyeonghoeru.jpg'],
+    buildYear: '1395년 (태조 4년)',
+    culturalProperty: '사적 제117호',
+    features: ['조선 법궁', '근정전', '경회루', '향원정']
   }
 };
 
@@ -535,6 +697,85 @@ app.get('/api/buildings', (req, res) => {
     res.status(500).json({
       success: false,
       message: '서버 오류가 발생했습니다.'
+    });
+  }
+});
+
+// 카카오 이미지 검색 API
+app.get('/api/search-image/:query', async (req, res) => {
+  try {
+    const query = decodeURIComponent(req.params.query);
+    console.log(`🔍 이미지 검색 요청: ${query}`);
+
+    const response = await axios.get('https://dapi.kakao.com/v2/search/image', {
+      params: {
+        query: query,
+        size: 5, // 최대 5개 이미지 (display가 아니라 size)
+        sort: 'accuracy' // 정확도순 정렬
+      },
+      headers: {
+        'Authorization': `KakaoAK ${process.env.KAKAO_REST_API_KEY}`
+      },
+      timeout: 5000 // 5초 타임아웃
+    });
+
+    if (response.data && response.data.documents && response.data.documents.length > 0) {
+      const images = response.data.documents.map(doc => ({
+        imageUrl: doc.image_url,
+        thumbnailUrl: doc.thumbnail_url,
+        displaySitename: doc.display_sitename,
+        docUrl: doc.doc_url,
+        width: doc.width,
+        height: doc.height,
+        datetime: doc.datetime
+      }));
+
+      console.log(`✅ 이미지 검색 완료: ${images.length}개 이미지 찾음`);
+
+      res.json({
+        success: true,
+        query: query,
+        images: images,
+        total: response.data.meta?.total_count || images.length,
+        isEnd: response.data.meta?.is_end || false
+      });
+    } else {
+      console.log(`❌ ${query} 검색 결과 없음`);
+      res.json({
+        success: false,
+        message: '이미지를 찾을 수 없습니다.',
+        images: [],
+        query: query
+      });
+    }
+
+  } catch (error) {
+    console.error('❌ 카카오 이미지 검색 오류:', error);
+    
+    if (error.response) {
+      console.error('API 응답 오류:', error.response.status, error.response.data);
+      
+      // 카카오 API 오류 메시지 처리
+      if (error.response.status === 401) {
+        return res.status(401).json({
+          success: false,
+          error: 'API 키가 유효하지 않습니다.',
+          message: 'Invalid API Key'
+        });
+      } else if (error.response.status === 429) {
+        return res.status(429).json({
+          success: false,
+          error: 'API 호출 한도를 초과했습니다.',
+          message: 'Rate limit exceeded'
+        });
+      }
+    }
+
+    res.status(500).json({
+      success: false,
+      error: '이미지 검색 중 오류가 발생했습니다.',
+      message: error.message,
+      query: req.params.query
     });
   }
 });
