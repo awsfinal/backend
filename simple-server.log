@@ -1,0 +1,1577 @@
+🚀 관광지 API 서버가 포트 5006에서 실행 중입니다.
+📍 API 엔드포인트:
+- GET /api/test : 서버 연결 테스트
+- GET /api/tourist-spots/nearby : GPS 기반 가까운 관광지 조회
+- GET /api/tourist-spots/:contentId : 관광지 상세 정보 조회
+✅ 서버 준비 완료!
+🔍 가까운 관광지 조회 요청: 37.5796, 126.9770
+🔑 API 키 확인: jXbeQ98Dvep6SzEFu8ul...
+🌐 관광공사 API 호출 중...
+📋 요청 URL: https://apis.data.go.kr/B551011/KorService2/locationBasedList2
+📋 요청 파라미터: {
+  serviceKey: 'jXbeQ98Dvep6SzEFu8ul...',
+  numOfRows: 3,
+  pageNo: 1,
+  MobileOS: 'ETC',
+  MobileApp: 'TourApp',
+  arrange: 'E',
+  mapX: '126.9770',
+  mapY: '37.5796',
+  radius: 20000,
+  _type: 'json'
+}
+📋 API 응답 상태: 200
+📋 API 응답 데이터 구조: {
+  "response": {
+    "header": {
+      "resultCode": "0000",
+      "resultMsg": "OK"
+    },
+    "body": {
+      "items": {
+        "item": [
+          {
+            "addr1": "서울특별시 종로구 사직로 161",
+            "addr2": "(세종로)",
+            "zipcode": "03045",
+            "areacode": "1",
+            "cat1": "A02",
+            "cat2": "A0208",
+            "cat3": "A02080100",
+            "contentid": "141661",
+            "contenttypeid": "15",
+            "createdtime": "20070322090000",
+            "dist": "69.52921807945307",
+            "firstimage": "http://tong.visitkorea.or.kr/cms/resource/87/3112987_image2_1.png",
+            "firstimage2": "http://tong.visitkorea.or.kr/cms/resource/87/3112987_image3_1.png",
+            "cpyrhtDivCd": "Type3",
+            "mapx": "126.9767235747",
+            "mapy": "37.5801859611",
+            "mlevel": "6",
+            "modifiedtime": "20240403142835",
+            "sigungucode": "23",
+            "tel": "02-3210-1645~6",
+            "title": "수문장 교대의식",
+            "lDongRegnCd": "11",
+            "lDongSignguCd": "110",
+            "lclsSystm1": "EV",
+            "lclsSystm2": "EV02",
+            "lclsSystm3": "EV020100"
+          },
+          {
+            "addr1": "",
+            "addr2": "",
+            "zipcode": "",
+            "areacode": "1",
+            "cat1": "C01",
+            "cat2": "C0112",
+            "cat3": "C01120001",
+            "contentid": "1952978",
+            "contenttypeid": "25",
+            "createdtime": "20140930025553",
+            "dist": "69.52921807945307",
+            "firstimage": "http://tong.visitkorea.or.kr/cms/resource/42/1568042_image2_1.jpg",
+            "firstimage2": "http://tong.visitkorea.or.kr/cms/resource/42/1568042_image3_1.jpg",
+            "cpyrhtDivCd": "Type3",
+            "mapx": "126.9767235747",
+            "mapy": "37.5801859611",
+            "mlevel": "6",
+            "modifiedtime": "20230810093117",
+            "sigungucode": "23",
+            "tel": "",
+            "title": "궁의 북쪽 자하문 돌아보기",
+            "lDongRegnCd": "11",
+            "lDongSignguCd": "110",
+            "lclsSystm1": "C01",
+            "lclsSystm2": "C0112",
+            "lclsSystm3": "C01120001"
+          },
+          {
+            "addr1": "서울특별시 종로구 사직로 161",
+            "addr2": "",
+            "zipcode": "03045",
+            "areacode": "1",
+            "cat1": "A02",
+            "cat2": "A0207",
+            "cat3": "A02070200",
+            "contentid": "1998564",
+            "contenttypeid": "15",
+            "createdtime": "20150421185827",
+            "dist": "86.3340704346321",
+            "firstimage": "http://tong.visitkorea.or.kr/cms/resource/65/3468365_image2_1.jpg",
+            "firstimage2": "http://tong.visitkorea.or.kr/cms/resource/65/3468365_image3_1.jpg",
+            "cpyrhtDivCd": "Type3",
+            "mapx": "126.9769930325",
+            "mapy": "37.5788222356",
+            "mlevel": "6",
+            "modifiedtime": "20250625162251",
+            "sigungucode": "23",
+            "tel": "1522-2295",
+            "title": "궁중문화축전",
+            "lDongRegnCd": "11",
+            "lDongSignguCd": "110",
+            "lclsSystm1": "EV",
+            "lclsSystm2": "EV01",
+            "lclsSystm3": "EV010400"
+          }
+        ]
+      },
+      "numOfRows": 3,
+      "pageNo": 1,
+      "totalCount": 9263
+    }
+  }
+}
+✅ 관광공사 API에서 3개 관광지 발견
+🔍 가까운 관광지 조회 요청: 37.473094, 126.8821895
+🔑 API 키 확인: jXbeQ98Dvep6SzEFu8ul...
+🌐 관광공사 API 호출 중...
+📋 요청 URL: https://apis.data.go.kr/B551011/KorService2/locationBasedList2
+📋 요청 파라미터: {
+  serviceKey: 'jXbeQ98Dvep6SzEFu8ul...',
+  numOfRows: 3,
+  pageNo: 1,
+  MobileOS: 'ETC',
+  MobileApp: 'TourApp',
+  arrange: 'E',
+  mapX: '126.8821895',
+  mapY: '37.473094',
+  radius: 20000,
+  _type: 'json'
+}
+📋 API 응답 상태: 200
+📋 API 응답 데이터 구조: {
+  "response": {
+    "header": {
+      "resultCode": "0000",
+      "resultMsg": "OK"
+    },
+    "body": {
+      "items": {
+        "item": [
+          {
+            "addr1": "서울특별시 금천구 벚꽃로 232(가산동)",
+            "addr2": "",
+            "zipcode": "08513",
+            "areacode": "1",
+            "cat1": "A04",
+            "cat2": "A0401",
+            "cat3": "A04011000",
+            "contentid": "2903792",
+            "contenttypeid": "38",
+            "createdtime": "20221101142619",
+            "dist": "417.98682091369903",
+            "firstimage": "http://tong.visitkorea.or.kr/cms/resource/17/2890617_image2_1.jpg",
+            "firstimage2": "http://tong.visitkorea.or.kr/cms/resource/17/2890617_image3_1.jpg",
+            "cpyrhtDivCd": "Type3",
+            "mapx": "126.8858042553",
+            "mapy": "37.4755020533",
+            "mlevel": "6",
+            "modifiedtime": "20240424125747",
+            "sigungucode": "8",
+            "tel": "",
+            "title": "죠이라이프",
+            "lDongRegnCd": "11",
+            "lDongSignguCd": "545",
+            "lclsSystm1": "SH",
+            "lclsSystm2": "SH04",
+            "lclsSystm3": "SH040300"
+          },
+          {
+            "addr1": "서울특별시 금천구 가산디지털1로 128 에스티엑스브이타워",
+            "addr2": "110호",
+            "zipcode": "08507",
+            "areacode": "1",
+            "cat1": "A05",
+            "cat2": "A0502",
+            "cat3": "A05020100",
+            "contentid": "2836567",
+            "contenttypeid": "39",
+            "createdtime": "20220816095911",
+            "dist": "487.99432953805564",
+            "firstimage": "http://tong.visitkorea.or.kr/cms/resource/60/2836560_image2_1.jpg",
+            "firstimage2": "http://tong.visitkorea.or.kr/cms/resource/60/2836560_image3_1.jpg",
+            "cpyrhtDivCd": "Type3",
+            "mapx": "126.8837682791",
+            "mapy": "37.4773045854",
+            "mlevel": "6",
+            "modifiedtime": "20250626145716",
+            "sigungucode": "8",
+            "tel": "",
+            "title": "가산물갈비&백년불고기",
+            "lDongRegnCd": "11",
+            "lDongSignguCd": "545",
+            "lclsSystm1": "FD",
+            "lclsSystm2": "FD01",
+            "lclsSystm3": "FD010100"
+          },
+          {
+            "addr1": "경기도 광명시 철망산로 87",
+            "addr2": "",
+            "zipcode": "14243",
+            "areacode": "31",
+            "cat1": "A04",
+            "cat2": "A0401",
+            "cat3": "A04011000",
+            "contentid": "2916537",
+            "contenttypeid": "38",
+            "createdtime": "20221031234112",
+            "dist": "511.01615748330374",
+            "firstimage": "http://tong.visitkorea.or.kr/cms/resource/35/2881835_image2_1.jpg",
+            "firstimage2": "http://tong.visitkorea.or.kr/cms/resource/35/2881835_image3_1.jpg",
+            "cpyrhtDivCd": "Type3",
+            "mapx": "126.8775690394",
+            "mapy": "37.4703552820",
+            "mlevel": "6",
+            "modifiedtime": "20240323170656",
+            "sigungucode": "4",
+            "tel": "",
+            "title": "세이브존 광명점",
+            "lDongRegnCd": "41",
+            "lDongSignguCd": "210",
+            "lclsSystm1": "SH",
+            "lclsSystm2": "SH04",
+            "lclsSystm3": "SH040300"
+          }
+        ]
+      },
+      "numOfRows": 3,
+      "pageNo": 1,
+      "totalCount": 9136
+    }
+  }
+}
+✅ 관광공사 API에서 3개 관광지 발견
+🔍 관광지 상세 정보 조회: 2903792
+📋 상세 API 응답 상태: 200
+📋 상세 API 응답 데이터: {
+  "responseTime": "2025-08-19T16:28:33.567",
+  "resultCode": "10",
+  "resultMsg": "INVALID_REQUEST_PARAMETER_ERROR(defaultYN)"
+}
+❌ 예상하지 못한 상세 API 응답 구조: {
+  responseTime: '2025-08-19T16:28:33.567',
+  resultCode: '10',
+  resultMsg: 'INVALID_REQUEST_PARAMETER_ERROR(defaultYN)'
+}
+🔍 가까운 관광지 조회 요청: 37.473094, 126.8821895
+🔑 API 키 확인: jXbeQ98Dvep6SzEFu8ul...
+🌐 관광공사 API 호출 중...
+📋 요청 URL: https://apis.data.go.kr/B551011/KorService2/locationBasedList2
+📋 요청 파라미터: {
+  serviceKey: 'jXbeQ98Dvep6SzEFu8ul...',
+  numOfRows: 3,
+  pageNo: 1,
+  MobileOS: 'ETC',
+  MobileApp: 'TourApp',
+  arrange: 'E',
+  mapX: '126.8821895',
+  mapY: '37.473094',
+  radius: 20000,
+  _type: 'json'
+}
+📋 API 응답 상태: 200
+📋 API 응답 데이터 구조: {
+  "response": {
+    "header": {
+      "resultCode": "0000",
+      "resultMsg": "OK"
+    },
+    "body": {
+      "items": {
+        "item": [
+          {
+            "addr1": "서울특별시 금천구 벚꽃로 232(가산동)",
+            "addr2": "",
+            "zipcode": "08513",
+            "areacode": "1",
+            "cat1": "A04",
+            "cat2": "A0401",
+            "cat3": "A04011000",
+            "contentid": "2903792",
+            "contenttypeid": "38",
+            "createdtime": "20221101142619",
+            "dist": "417.98682091369903",
+            "firstimage": "http://tong.visitkorea.or.kr/cms/resource/17/2890617_image2_1.jpg",
+            "firstimage2": "http://tong.visitkorea.or.kr/cms/resource/17/2890617_image3_1.jpg",
+            "cpyrhtDivCd": "Type3",
+            "mapx": "126.8858042553",
+            "mapy": "37.4755020533",
+            "mlevel": "6",
+            "modifiedtime": "20240424125747",
+            "sigungucode": "8",
+            "tel": "",
+            "title": "죠이라이프",
+            "lDongRegnCd": "11",
+            "lDongSignguCd": "545",
+            "lclsSystm1": "SH",
+            "lclsSystm2": "SH04",
+            "lclsSystm3": "SH040300"
+          },
+          {
+            "addr1": "서울특별시 금천구 가산디지털1로 128 에스티엑스브이타워",
+            "addr2": "110호",
+            "zipcode": "08507",
+            "areacode": "1",
+            "cat1": "A05",
+            "cat2": "A0502",
+            "cat3": "A05020100",
+            "contentid": "2836567",
+            "contenttypeid": "39",
+            "createdtime": "20220816095911",
+            "dist": "487.99432953805564",
+            "firstimage": "http://tong.visitkorea.or.kr/cms/resource/60/2836560_image2_1.jpg",
+            "firstimage2": "http://tong.visitkorea.or.kr/cms/resource/60/2836560_image3_1.jpg",
+            "cpyrhtDivCd": "Type3",
+            "mapx": "126.8837682791",
+            "mapy": "37.4773045854",
+            "mlevel": "6",
+            "modifiedtime": "20250626145716",
+            "sigungucode": "8",
+            "tel": "",
+            "title": "가산물갈비&백년불고기",
+            "lDongRegnCd": "11",
+            "lDongSignguCd": "545",
+            "lclsSystm1": "FD",
+            "lclsSystm2": "FD01",
+            "lclsSystm3": "FD010100"
+          },
+          {
+            "addr1": "경기도 광명시 철망산로 87",
+            "addr2": "",
+            "zipcode": "14243",
+            "areacode": "31",
+            "cat1": "A04",
+            "cat2": "A0401",
+            "cat3": "A04011000",
+            "contentid": "2916537",
+            "contenttypeid": "38",
+            "createdtime": "20221031234112",
+            "dist": "511.01615748330374",
+            "firstimage": "http://tong.visitkorea.or.kr/cms/resource/35/2881835_image2_1.jpg",
+            "firstimage2": "http://tong.visitkorea.or.kr/cms/resource/35/2881835_image3_1.jpg",
+            "cpyrhtDivCd": "Type3",
+            "mapx": "126.8775690394",
+            "mapy": "37.4703552820",
+            "mlevel": "6",
+            "modifiedtime": "20240323170656",
+            "sigungucode": "4",
+            "tel": "",
+            "title": "세이브존 광명점",
+            "lDongRegnCd": "41",
+            "lDongSignguCd": "210",
+            "lclsSystm1": "SH",
+            "lclsSystm2": "SH04",
+            "lclsSystm3": "SH040300"
+          }
+        ]
+      },
+      "numOfRows": 3,
+      "pageNo": 1,
+      "totalCount": 9136
+    }
+  }
+}
+✅ 관광공사 API에서 3개 관광지 발견
+🔍 가까운 관광지 조회 요청: 37.473094, 126.8821895
+🔑 API 키 확인: jXbeQ98Dvep6SzEFu8ul...
+🌐 관광공사 API 호출 중...
+📋 요청 URL: https://apis.data.go.kr/B551011/KorService2/locationBasedList2
+📋 요청 파라미터: {
+  serviceKey: 'jXbeQ98Dvep6SzEFu8ul...',
+  numOfRows: 3,
+  pageNo: 1,
+  MobileOS: 'ETC',
+  MobileApp: 'TourApp',
+  arrange: 'E',
+  mapX: '126.8821895',
+  mapY: '37.473094',
+  radius: 20000,
+  _type: 'json'
+}
+📋 API 응답 상태: 200
+📋 API 응답 데이터 구조: {
+  "response": {
+    "header": {
+      "resultCode": "0000",
+      "resultMsg": "OK"
+    },
+    "body": {
+      "items": {
+        "item": [
+          {
+            "addr1": "서울특별시 금천구 벚꽃로 232(가산동)",
+            "addr2": "",
+            "zipcode": "08513",
+            "areacode": "1",
+            "cat1": "A04",
+            "cat2": "A0401",
+            "cat3": "A04011000",
+            "contentid": "2903792",
+            "contenttypeid": "38",
+            "createdtime": "20221101142619",
+            "dist": "417.98682091369903",
+            "firstimage": "http://tong.visitkorea.or.kr/cms/resource/17/2890617_image2_1.jpg",
+            "firstimage2": "http://tong.visitkorea.or.kr/cms/resource/17/2890617_image3_1.jpg",
+            "cpyrhtDivCd": "Type3",
+            "mapx": "126.8858042553",
+            "mapy": "37.4755020533",
+            "mlevel": "6",
+            "modifiedtime": "20240424125747",
+            "sigungucode": "8",
+            "tel": "",
+            "title": "죠이라이프",
+            "lDongRegnCd": "11",
+            "lDongSignguCd": "545",
+            "lclsSystm1": "SH",
+            "lclsSystm2": "SH04",
+            "lclsSystm3": "SH040300"
+          },
+          {
+            "addr1": "서울특별시 금천구 가산디지털1로 128 에스티엑스브이타워",
+            "addr2": "110호",
+            "zipcode": "08507",
+            "areacode": "1",
+            "cat1": "A05",
+            "cat2": "A0502",
+            "cat3": "A05020100",
+            "contentid": "2836567",
+            "contenttypeid": "39",
+            "createdtime": "20220816095911",
+            "dist": "487.99432953805564",
+            "firstimage": "http://tong.visitkorea.or.kr/cms/resource/60/2836560_image2_1.jpg",
+            "firstimage2": "http://tong.visitkorea.or.kr/cms/resource/60/2836560_image3_1.jpg",
+            "cpyrhtDivCd": "Type3",
+            "mapx": "126.8837682791",
+            "mapy": "37.4773045854",
+            "mlevel": "6",
+            "modifiedtime": "20250626145716",
+            "sigungucode": "8",
+            "tel": "",
+            "title": "가산물갈비&백년불고기",
+            "lDongRegnCd": "11",
+            "lDongSignguCd": "545",
+            "lclsSystm1": "FD",
+            "lclsSystm2": "FD01",
+            "lclsSystm3": "FD010100"
+          },
+          {
+            "addr1": "경기도 광명시 철망산로 87",
+            "addr2": "",
+            "zipcode": "14243",
+            "areacode": "31",
+            "cat1": "A04",
+            "cat2": "A0401",
+            "cat3": "A04011000",
+            "contentid": "2916537",
+            "contenttypeid": "38",
+            "createdtime": "20221031234112",
+            "dist": "511.01615748330374",
+            "firstimage": "http://tong.visitkorea.or.kr/cms/resource/35/2881835_image2_1.jpg",
+            "firstimage2": "http://tong.visitkorea.or.kr/cms/resource/35/2881835_image3_1.jpg",
+            "cpyrhtDivCd": "Type3",
+            "mapx": "126.8775690394",
+            "mapy": "37.4703552820",
+            "mlevel": "6",
+            "modifiedtime": "20240323170656",
+            "sigungucode": "4",
+            "tel": "",
+            "title": "세이브존 광명점",
+            "lDongRegnCd": "41",
+            "lDongSignguCd": "210",
+            "lclsSystm1": "SH",
+            "lclsSystm2": "SH04",
+            "lclsSystm3": "SH040300"
+          }
+        ]
+      },
+      "numOfRows": 3,
+      "pageNo": 1,
+      "totalCount": 9136
+    }
+  }
+}
+✅ 관광공사 API에서 3개 관광지 발견
+🔍 가까운 관광지 조회 요청: 37.473094, 126.8821895
+🔑 API 키 확인: jXbeQ98Dvep6SzEFu8ul...
+🌐 관광공사 API 호출 중...
+📋 요청 URL: https://apis.data.go.kr/B551011/KorService2/locationBasedList2
+📋 요청 파라미터: {
+  serviceKey: 'jXbeQ98Dvep6SzEFu8ul...',
+  numOfRows: 3,
+  pageNo: 1,
+  MobileOS: 'ETC',
+  MobileApp: 'TourApp',
+  arrange: 'E',
+  mapX: '126.8821895',
+  mapY: '37.473094',
+  radius: 20000,
+  _type: 'json'
+}
+📋 API 응답 상태: 200
+📋 API 응답 데이터 구조: {
+  "response": {
+    "header": {
+      "resultCode": "0000",
+      "resultMsg": "OK"
+    },
+    "body": {
+      "items": {
+        "item": [
+          {
+            "addr1": "서울특별시 금천구 벚꽃로 232(가산동)",
+            "addr2": "",
+            "zipcode": "08513",
+            "areacode": "1",
+            "cat1": "A04",
+            "cat2": "A0401",
+            "cat3": "A04011000",
+            "contentid": "2903792",
+            "contenttypeid": "38",
+            "createdtime": "20221101142619",
+            "dist": "417.98682091369903",
+            "firstimage": "http://tong.visitkorea.or.kr/cms/resource/17/2890617_image2_1.jpg",
+            "firstimage2": "http://tong.visitkorea.or.kr/cms/resource/17/2890617_image3_1.jpg",
+            "cpyrhtDivCd": "Type3",
+            "mapx": "126.8858042553",
+            "mapy": "37.4755020533",
+            "mlevel": "6",
+            "modifiedtime": "20240424125747",
+            "sigungucode": "8",
+            "tel": "",
+            "title": "죠이라이프",
+            "lDongRegnCd": "11",
+            "lDongSignguCd": "545",
+            "lclsSystm1": "SH",
+            "lclsSystm2": "SH04",
+            "lclsSystm3": "SH040300"
+          },
+          {
+            "addr1": "서울특별시 금천구 가산디지털1로 128 에스티엑스브이타워",
+            "addr2": "110호",
+            "zipcode": "08507",
+            "areacode": "1",
+            "cat1": "A05",
+            "cat2": "A0502",
+            "cat3": "A05020100",
+            "contentid": "2836567",
+            "contenttypeid": "39",
+            "createdtime": "20220816095911",
+            "dist": "487.99432953805564",
+            "firstimage": "http://tong.visitkorea.or.kr/cms/resource/60/2836560_image2_1.jpg",
+            "firstimage2": "http://tong.visitkorea.or.kr/cms/resource/60/2836560_image3_1.jpg",
+            "cpyrhtDivCd": "Type3",
+            "mapx": "126.8837682791",
+            "mapy": "37.4773045854",
+            "mlevel": "6",
+            "modifiedtime": "20250626145716",
+            "sigungucode": "8",
+            "tel": "",
+            "title": "가산물갈비&백년불고기",
+            "lDongRegnCd": "11",
+            "lDongSignguCd": "545",
+            "lclsSystm1": "FD",
+            "lclsSystm2": "FD01",
+            "lclsSystm3": "FD010100"
+          },
+          {
+            "addr1": "경기도 광명시 철망산로 87",
+            "addr2": "",
+            "zipcode": "14243",
+            "areacode": "31",
+            "cat1": "A04",
+            "cat2": "A0401",
+            "cat3": "A04011000",
+            "contentid": "2916537",
+            "contenttypeid": "38",
+            "createdtime": "20221031234112",
+            "dist": "511.01615748330374",
+            "firstimage": "http://tong.visitkorea.or.kr/cms/resource/35/2881835_image2_1.jpg",
+            "firstimage2": "http://tong.visitkorea.or.kr/cms/resource/35/2881835_image3_1.jpg",
+            "cpyrhtDivCd": "Type3",
+            "mapx": "126.8775690394",
+            "mapy": "37.4703552820",
+            "mlevel": "6",
+            "modifiedtime": "20240323170656",
+            "sigungucode": "4",
+            "tel": "",
+            "title": "세이브존 광명점",
+            "lDongRegnCd": "41",
+            "lDongSignguCd": "210",
+            "lclsSystm1": "SH",
+            "lclsSystm2": "SH04",
+            "lclsSystm3": "SH040300"
+          }
+        ]
+      },
+      "numOfRows": 3,
+      "pageNo": 1,
+      "totalCount": 9136
+    }
+  }
+}
+✅ 관광공사 API에서 3개 관광지 발견
+🔍 가까운 관광지 조회 요청: 37.473094, 126.8821895
+🔑 API 키 확인: jXbeQ98Dvep6SzEFu8ul...
+🌐 관광공사 API 호출 중...
+📋 요청 URL: https://apis.data.go.kr/B551011/KorService2/locationBasedList2
+📋 요청 파라미터: {
+  serviceKey: 'jXbeQ98Dvep6SzEFu8ul...',
+  numOfRows: 3,
+  pageNo: 1,
+  MobileOS: 'ETC',
+  MobileApp: 'TourApp',
+  arrange: 'E',
+  mapX: '126.8821895',
+  mapY: '37.473094',
+  radius: 20000,
+  _type: 'json'
+}
+📋 API 응답 상태: 200
+📋 API 응답 데이터 구조: {
+  "response": {
+    "header": {
+      "resultCode": "0000",
+      "resultMsg": "OK"
+    },
+    "body": {
+      "items": {
+        "item": [
+          {
+            "addr1": "서울특별시 금천구 벚꽃로 232(가산동)",
+            "addr2": "",
+            "zipcode": "08513",
+            "areacode": "1",
+            "cat1": "A04",
+            "cat2": "A0401",
+            "cat3": "A04011000",
+            "contentid": "2903792",
+            "contenttypeid": "38",
+            "createdtime": "20221101142619",
+            "dist": "417.98682091369903",
+            "firstimage": "http://tong.visitkorea.or.kr/cms/resource/17/2890617_image2_1.jpg",
+            "firstimage2": "http://tong.visitkorea.or.kr/cms/resource/17/2890617_image3_1.jpg",
+            "cpyrhtDivCd": "Type3",
+            "mapx": "126.8858042553",
+            "mapy": "37.4755020533",
+            "mlevel": "6",
+            "modifiedtime": "20240424125747",
+            "sigungucode": "8",
+            "tel": "",
+            "title": "죠이라이프",
+            "lDongRegnCd": "11",
+            "lDongSignguCd": "545",
+            "lclsSystm1": "SH",
+            "lclsSystm2": "SH04",
+            "lclsSystm3": "SH040300"
+          },
+          {
+            "addr1": "서울특별시 금천구 가산디지털1로 128 에스티엑스브이타워",
+            "addr2": "110호",
+            "zipcode": "08507",
+            "areacode": "1",
+            "cat1": "A05",
+            "cat2": "A0502",
+            "cat3": "A05020100",
+            "contentid": "2836567",
+            "contenttypeid": "39",
+            "createdtime": "20220816095911",
+            "dist": "487.99432953805564",
+            "firstimage": "http://tong.visitkorea.or.kr/cms/resource/60/2836560_image2_1.jpg",
+            "firstimage2": "http://tong.visitkorea.or.kr/cms/resource/60/2836560_image3_1.jpg",
+            "cpyrhtDivCd": "Type3",
+            "mapx": "126.8837682791",
+            "mapy": "37.4773045854",
+            "mlevel": "6",
+            "modifiedtime": "20250626145716",
+            "sigungucode": "8",
+            "tel": "",
+            "title": "가산물갈비&백년불고기",
+            "lDongRegnCd": "11",
+            "lDongSignguCd": "545",
+            "lclsSystm1": "FD",
+            "lclsSystm2": "FD01",
+            "lclsSystm3": "FD010100"
+          },
+          {
+            "addr1": "경기도 광명시 철망산로 87",
+            "addr2": "",
+            "zipcode": "14243",
+            "areacode": "31",
+            "cat1": "A04",
+            "cat2": "A0401",
+            "cat3": "A04011000",
+            "contentid": "2916537",
+            "contenttypeid": "38",
+            "createdtime": "20221031234112",
+            "dist": "511.01615748330374",
+            "firstimage": "http://tong.visitkorea.or.kr/cms/resource/35/2881835_image2_1.jpg",
+            "firstimage2": "http://tong.visitkorea.or.kr/cms/resource/35/2881835_image3_1.jpg",
+            "cpyrhtDivCd": "Type3",
+            "mapx": "126.8775690394",
+            "mapy": "37.4703552820",
+            "mlevel": "6",
+            "modifiedtime": "20240323170656",
+            "sigungucode": "4",
+            "tel": "",
+            "title": "세이브존 광명점",
+            "lDongRegnCd": "41",
+            "lDongSignguCd": "210",
+            "lclsSystm1": "SH",
+            "lclsSystm2": "SH04",
+            "lclsSystm3": "SH040300"
+          }
+        ]
+      },
+      "numOfRows": 3,
+      "pageNo": 1,
+      "totalCount": 9136
+    }
+  }
+}
+✅ 관광공사 API에서 3개 관광지 발견
+🔍 가까운 관광지 조회 요청: 37.473094, 126.8821895
+🔑 API 키 확인: jXbeQ98Dvep6SzEFu8ul...
+🌐 관광공사 API 호출 중...
+📋 요청 URL: https://apis.data.go.kr/B551011/KorService2/locationBasedList2
+📋 요청 파라미터: {
+  serviceKey: 'jXbeQ98Dvep6SzEFu8ul...',
+  numOfRows: 3,
+  pageNo: 1,
+  MobileOS: 'ETC',
+  MobileApp: 'TourApp',
+  arrange: 'E',
+  mapX: '126.8821895',
+  mapY: '37.473094',
+  radius: 20000,
+  _type: 'json'
+}
+📋 API 응답 상태: 200
+📋 API 응답 데이터 구조: {
+  "response": {
+    "header": {
+      "resultCode": "0000",
+      "resultMsg": "OK"
+    },
+    "body": {
+      "items": {
+        "item": [
+          {
+            "addr1": "서울특별시 금천구 벚꽃로 232(가산동)",
+            "addr2": "",
+            "zipcode": "08513",
+            "areacode": "1",
+            "cat1": "A04",
+            "cat2": "A0401",
+            "cat3": "A04011000",
+            "contentid": "2903792",
+            "contenttypeid": "38",
+            "createdtime": "20221101142619",
+            "dist": "417.98682091369903",
+            "firstimage": "http://tong.visitkorea.or.kr/cms/resource/17/2890617_image2_1.jpg",
+            "firstimage2": "http://tong.visitkorea.or.kr/cms/resource/17/2890617_image3_1.jpg",
+            "cpyrhtDivCd": "Type3",
+            "mapx": "126.8858042553",
+            "mapy": "37.4755020533",
+            "mlevel": "6",
+            "modifiedtime": "20240424125747",
+            "sigungucode": "8",
+            "tel": "",
+            "title": "죠이라이프",
+            "lDongRegnCd": "11",
+            "lDongSignguCd": "545",
+            "lclsSystm1": "SH",
+            "lclsSystm2": "SH04",
+            "lclsSystm3": "SH040300"
+          },
+          {
+            "addr1": "서울특별시 금천구 가산디지털1로 128 에스티엑스브이타워",
+            "addr2": "110호",
+            "zipcode": "08507",
+            "areacode": "1",
+            "cat1": "A05",
+            "cat2": "A0502",
+            "cat3": "A05020100",
+            "contentid": "2836567",
+            "contenttypeid": "39",
+            "createdtime": "20220816095911",
+            "dist": "487.99432953805564",
+            "firstimage": "http://tong.visitkorea.or.kr/cms/resource/60/2836560_image2_1.jpg",
+            "firstimage2": "http://tong.visitkorea.or.kr/cms/resource/60/2836560_image3_1.jpg",
+            "cpyrhtDivCd": "Type3",
+            "mapx": "126.8837682791",
+            "mapy": "37.4773045854",
+            "mlevel": "6",
+            "modifiedtime": "20250626145716",
+            "sigungucode": "8",
+            "tel": "",
+            "title": "가산물갈비&백년불고기",
+            "lDongRegnCd": "11",
+            "lDongSignguCd": "545",
+            "lclsSystm1": "FD",
+            "lclsSystm2": "FD01",
+            "lclsSystm3": "FD010100"
+          },
+          {
+            "addr1": "경기도 광명시 철망산로 87",
+            "addr2": "",
+            "zipcode": "14243",
+            "areacode": "31",
+            "cat1": "A04",
+            "cat2": "A0401",
+            "cat3": "A04011000",
+            "contentid": "2916537",
+            "contenttypeid": "38",
+            "createdtime": "20221031234112",
+            "dist": "511.01615748330374",
+            "firstimage": "http://tong.visitkorea.or.kr/cms/resource/35/2881835_image2_1.jpg",
+            "firstimage2": "http://tong.visitkorea.or.kr/cms/resource/35/2881835_image3_1.jpg",
+            "cpyrhtDivCd": "Type3",
+            "mapx": "126.8775690394",
+            "mapy": "37.4703552820",
+            "mlevel": "6",
+            "modifiedtime": "20240323170656",
+            "sigungucode": "4",
+            "tel": "",
+            "title": "세이브존 광명점",
+            "lDongRegnCd": "41",
+            "lDongSignguCd": "210",
+            "lclsSystm1": "SH",
+            "lclsSystm2": "SH04",
+            "lclsSystm3": "SH040300"
+          }
+        ]
+      },
+      "numOfRows": 3,
+      "pageNo": 1,
+      "totalCount": 9136
+    }
+  }
+}
+✅ 관광공사 API에서 3개 관광지 발견
+🔍 가까운 관광지 조회 요청: 37.473094, 126.8821895
+🔑 API 키 확인: jXbeQ98Dvep6SzEFu8ul...
+🌐 관광공사 API 호출 중...
+📋 요청 URL: https://apis.data.go.kr/B551011/KorService2/locationBasedList2
+📋 요청 파라미터: {
+  serviceKey: 'jXbeQ98Dvep6SzEFu8ul...',
+  numOfRows: 3,
+  pageNo: 1,
+  MobileOS: 'ETC',
+  MobileApp: 'TourApp',
+  arrange: 'E',
+  mapX: '126.8821895',
+  mapY: '37.473094',
+  radius: 20000,
+  _type: 'json'
+}
+📋 API 응답 상태: 200
+📋 API 응답 데이터 구조: {
+  "response": {
+    "header": {
+      "resultCode": "0000",
+      "resultMsg": "OK"
+    },
+    "body": {
+      "items": {
+        "item": [
+          {
+            "addr1": "서울특별시 금천구 벚꽃로 232(가산동)",
+            "addr2": "",
+            "zipcode": "08513",
+            "areacode": "1",
+            "cat1": "A04",
+            "cat2": "A0401",
+            "cat3": "A04011000",
+            "contentid": "2903792",
+            "contenttypeid": "38",
+            "createdtime": "20221101142619",
+            "dist": "417.98682091369903",
+            "firstimage": "http://tong.visitkorea.or.kr/cms/resource/17/2890617_image2_1.jpg",
+            "firstimage2": "http://tong.visitkorea.or.kr/cms/resource/17/2890617_image3_1.jpg",
+            "cpyrhtDivCd": "Type3",
+            "mapx": "126.8858042553",
+            "mapy": "37.4755020533",
+            "mlevel": "6",
+            "modifiedtime": "20240424125747",
+            "sigungucode": "8",
+            "tel": "",
+            "title": "죠이라이프",
+            "lDongRegnCd": "11",
+            "lDongSignguCd": "545",
+            "lclsSystm1": "SH",
+            "lclsSystm2": "SH04",
+            "lclsSystm3": "SH040300"
+          },
+          {
+            "addr1": "서울특별시 금천구 가산디지털1로 128 에스티엑스브이타워",
+            "addr2": "110호",
+            "zipcode": "08507",
+            "areacode": "1",
+            "cat1": "A05",
+            "cat2": "A0502",
+            "cat3": "A05020100",
+            "contentid": "2836567",
+            "contenttypeid": "39",
+            "createdtime": "20220816095911",
+            "dist": "487.99432953805564",
+            "firstimage": "http://tong.visitkorea.or.kr/cms/resource/60/2836560_image2_1.jpg",
+            "firstimage2": "http://tong.visitkorea.or.kr/cms/resource/60/2836560_image3_1.jpg",
+            "cpyrhtDivCd": "Type3",
+            "mapx": "126.8837682791",
+            "mapy": "37.4773045854",
+            "mlevel": "6",
+            "modifiedtime": "20250626145716",
+            "sigungucode": "8",
+            "tel": "",
+            "title": "가산물갈비&백년불고기",
+            "lDongRegnCd": "11",
+            "lDongSignguCd": "545",
+            "lclsSystm1": "FD",
+            "lclsSystm2": "FD01",
+            "lclsSystm3": "FD010100"
+          },
+          {
+            "addr1": "경기도 광명시 철망산로 87",
+            "addr2": "",
+            "zipcode": "14243",
+            "areacode": "31",
+            "cat1": "A04",
+            "cat2": "A0401",
+            "cat3": "A04011000",
+            "contentid": "2916537",
+            "contenttypeid": "38",
+            "createdtime": "20221031234112",
+            "dist": "511.01615748330374",
+            "firstimage": "http://tong.visitkorea.or.kr/cms/resource/35/2881835_image2_1.jpg",
+            "firstimage2": "http://tong.visitkorea.or.kr/cms/resource/35/2881835_image3_1.jpg",
+            "cpyrhtDivCd": "Type3",
+            "mapx": "126.8775690394",
+            "mapy": "37.4703552820",
+            "mlevel": "6",
+            "modifiedtime": "20240323170656",
+            "sigungucode": "4",
+            "tel": "",
+            "title": "세이브존 광명점",
+            "lDongRegnCd": "41",
+            "lDongSignguCd": "210",
+            "lclsSystm1": "SH",
+            "lclsSystm2": "SH04",
+            "lclsSystm3": "SH040300"
+          }
+        ]
+      },
+      "numOfRows": 3,
+      "pageNo": 1,
+      "totalCount": 9136
+    }
+  }
+}
+✅ 관광공사 API에서 3개 관광지 발견
+🔍 가까운 관광지 조회 요청: 37.5790572, 126.9773101
+🔑 API 키 확인: jXbeQ98Dvep6SzEFu8ul...
+🌐 관광공사 API 호출 중...
+📋 요청 URL: https://apis.data.go.kr/B551011/KorService2/locationBasedList2
+📋 요청 파라미터: {
+  serviceKey: 'jXbeQ98Dvep6SzEFu8ul...',
+  numOfRows: 3,
+  pageNo: 1,
+  MobileOS: 'ETC',
+  MobileApp: 'TourApp',
+  arrange: 'E',
+  mapX: '126.9773101',
+  mapY: '37.5790572',
+  radius: 20000,
+  _type: 'json'
+}
+📋 API 응답 상태: 200
+📋 API 응답 데이터 구조: {
+  "response": {
+    "header": {
+      "resultCode": "0000",
+      "resultMsg": "OK"
+    },
+    "body": {
+      "items": {
+        "item": [
+          {
+            "addr1": "서울특별시 종로구 사직로 161",
+            "addr2": "",
+            "zipcode": "03045",
+            "areacode": "1",
+            "cat1": "A02",
+            "cat2": "A0207",
+            "cat3": "A02070200",
+            "contentid": "1998564",
+            "contenttypeid": "15",
+            "createdtime": "20150421185827",
+            "dist": "38.40240889811792",
+            "firstimage": "http://tong.visitkorea.or.kr/cms/resource/65/3468365_image2_1.jpg",
+            "firstimage2": "http://tong.visitkorea.or.kr/cms/resource/65/3468365_image3_1.jpg",
+            "cpyrhtDivCd": "Type3",
+            "mapx": "126.9769930325",
+            "mapy": "37.5788222356",
+            "mlevel": "6",
+            "modifiedtime": "20250625162251",
+            "sigungucode": "23",
+            "tel": "1522-2295",
+            "title": "궁중문화축전",
+            "lDongRegnCd": "11",
+            "lDongSignguCd": "110",
+            "lclsSystm1": "EV",
+            "lclsSystm2": "EV01",
+            "lclsSystm3": "EV010400"
+          },
+          {
+            "addr1": "서울특별시 종로구 사직로 161",
+            "addr2": "(세종로)",
+            "zipcode": "03045",
+            "areacode": "1",
+            "cat1": "A02",
+            "cat2": "A0208",
+            "cat3": "A02080100",
+            "contentid": "141661",
+            "contenttypeid": "15",
+            "createdtime": "20070322090000",
+            "dist": "135.70926488835468",
+            "firstimage": "http://tong.visitkorea.or.kr/cms/resource/87/3112987_image2_1.png",
+            "firstimage2": "http://tong.visitkorea.or.kr/cms/resource/87/3112987_image3_1.png",
+            "cpyrhtDivCd": "Type3",
+            "mapx": "126.9767235747",
+            "mapy": "37.5801859611",
+            "mlevel": "6",
+            "modifiedtime": "20240403142835",
+            "sigungucode": "23",
+            "tel": "02-3210-1645~6",
+            "title": "수문장 교대의식",
+            "lDongRegnCd": "11",
+            "lDongSignguCd": "110",
+            "lclsSystm1": "EV",
+            "lclsSystm2": "EV02",
+            "lclsSystm3": "EV020100"
+          },
+          {
+            "addr1": "",
+            "addr2": "",
+            "zipcode": "",
+            "areacode": "1",
+            "cat1": "C01",
+            "cat2": "C0112",
+            "cat3": "C01120001",
+            "contentid": "1952978",
+            "contenttypeid": "25",
+            "createdtime": "20140930025553",
+            "dist": "135.70926488835468",
+            "firstimage": "http://tong.visitkorea.or.kr/cms/resource/42/1568042_image2_1.jpg",
+            "firstimage2": "http://tong.visitkorea.or.kr/cms/resource/42/1568042_image3_1.jpg",
+            "cpyrhtDivCd": "Type3",
+            "mapx": "126.9767235747",
+            "mapy": "37.5801859611",
+            "mlevel": "6",
+            "modifiedtime": "20230810093117",
+            "sigungucode": "23",
+            "tel": "",
+            "title": "궁의 북쪽 자하문 돌아보기",
+            "lDongRegnCd": "11",
+            "lDongSignguCd": "110",
+            "lclsSystm1": "C01",
+            "lclsSystm2": "C0112",
+            "lclsSystm3": "C01120001"
+          }
+        ]
+      },
+      "numOfRows": 3,
+      "pageNo": 1,
+      "totalCount": 9261
+    }
+  }
+}
+✅ 관광공사 API에서 3개 관광지 발견
+🔍 가까운 관광지 조회 요청: 37.5790572, 126.9773101
+🔑 API 키 확인: jXbeQ98Dvep6SzEFu8ul...
+🌐 관광공사 API 호출 중...
+📋 요청 URL: https://apis.data.go.kr/B551011/KorService2/locationBasedList2
+📋 요청 파라미터: {
+  serviceKey: 'jXbeQ98Dvep6SzEFu8ul...',
+  numOfRows: 3,
+  pageNo: 1,
+  MobileOS: 'ETC',
+  MobileApp: 'TourApp',
+  arrange: 'E',
+  mapX: '126.9773101',
+  mapY: '37.5790572',
+  radius: 20000,
+  _type: 'json'
+}
+📋 API 응답 상태: 200
+📋 API 응답 데이터 구조: {
+  "response": {
+    "header": {
+      "resultCode": "0000",
+      "resultMsg": "OK"
+    },
+    "body": {
+      "items": {
+        "item": [
+          {
+            "addr1": "서울특별시 종로구 사직로 161",
+            "addr2": "",
+            "zipcode": "03045",
+            "areacode": "1",
+            "cat1": "A02",
+            "cat2": "A0207",
+            "cat3": "A02070200",
+            "contentid": "1998564",
+            "contenttypeid": "15",
+            "createdtime": "20150421185827",
+            "dist": "38.40240889811792",
+            "firstimage": "http://tong.visitkorea.or.kr/cms/resource/65/3468365_image2_1.jpg",
+            "firstimage2": "http://tong.visitkorea.or.kr/cms/resource/65/3468365_image3_1.jpg",
+            "cpyrhtDivCd": "Type3",
+            "mapx": "126.9769930325",
+            "mapy": "37.5788222356",
+            "mlevel": "6",
+            "modifiedtime": "20250625162251",
+            "sigungucode": "23",
+            "tel": "1522-2295",
+            "title": "궁중문화축전",
+            "lDongRegnCd": "11",
+            "lDongSignguCd": "110",
+            "lclsSystm1": "EV",
+            "lclsSystm2": "EV01",
+            "lclsSystm3": "EV010400"
+          },
+          {
+            "addr1": "서울특별시 종로구 사직로 161",
+            "addr2": "(세종로)",
+            "zipcode": "03045",
+            "areacode": "1",
+            "cat1": "A02",
+            "cat2": "A0208",
+            "cat3": "A02080100",
+            "contentid": "141661",
+            "contenttypeid": "15",
+            "createdtime": "20070322090000",
+            "dist": "135.70926488835468",
+            "firstimage": "http://tong.visitkorea.or.kr/cms/resource/87/3112987_image2_1.png",
+            "firstimage2": "http://tong.visitkorea.or.kr/cms/resource/87/3112987_image3_1.png",
+            "cpyrhtDivCd": "Type3",
+            "mapx": "126.9767235747",
+            "mapy": "37.5801859611",
+            "mlevel": "6",
+            "modifiedtime": "20240403142835",
+            "sigungucode": "23",
+            "tel": "02-3210-1645~6",
+            "title": "수문장 교대의식",
+            "lDongRegnCd": "11",
+            "lDongSignguCd": "110",
+            "lclsSystm1": "EV",
+            "lclsSystm2": "EV02",
+            "lclsSystm3": "EV020100"
+          },
+          {
+            "addr1": "",
+            "addr2": "",
+            "zipcode": "",
+            "areacode": "1",
+            "cat1": "C01",
+            "cat2": "C0112",
+            "cat3": "C01120001",
+            "contentid": "1952978",
+            "contenttypeid": "25",
+            "createdtime": "20140930025553",
+            "dist": "135.70926488835468",
+            "firstimage": "http://tong.visitkorea.or.kr/cms/resource/42/1568042_image2_1.jpg",
+            "firstimage2": "http://tong.visitkorea.or.kr/cms/resource/42/1568042_image3_1.jpg",
+            "cpyrhtDivCd": "Type3",
+            "mapx": "126.9767235747",
+            "mapy": "37.5801859611",
+            "mlevel": "6",
+            "modifiedtime": "20230810093117",
+            "sigungucode": "23",
+            "tel": "",
+            "title": "궁의 북쪽 자하문 돌아보기",
+            "lDongRegnCd": "11",
+            "lDongSignguCd": "110",
+            "lclsSystm1": "C01",
+            "lclsSystm2": "C0112",
+            "lclsSystm3": "C01120001"
+          }
+        ]
+      },
+      "numOfRows": 3,
+      "pageNo": 1,
+      "totalCount": 9261
+    }
+  }
+}
+✅ 관광공사 API에서 3개 관광지 발견
+🔍 가까운 관광지 조회 요청: 37.5790572, 126.9773101
+🔑 API 키 확인: jXbeQ98Dvep6SzEFu8ul...
+🌐 관광공사 API 호출 중...
+📋 요청 URL: https://apis.data.go.kr/B551011/KorService2/locationBasedList2
+📋 요청 파라미터: {
+  serviceKey: 'jXbeQ98Dvep6SzEFu8ul...',
+  numOfRows: 3,
+  pageNo: 1,
+  MobileOS: 'ETC',
+  MobileApp: 'TourApp',
+  arrange: 'E',
+  mapX: '126.9773101',
+  mapY: '37.5790572',
+  radius: 20000,
+  _type: 'json'
+}
+📋 API 응답 상태: 200
+📋 API 응답 데이터 구조: {
+  "response": {
+    "header": {
+      "resultCode": "0000",
+      "resultMsg": "OK"
+    },
+    "body": {
+      "items": {
+        "item": [
+          {
+            "addr1": "서울특별시 종로구 사직로 161",
+            "addr2": "",
+            "zipcode": "03045",
+            "areacode": "1",
+            "cat1": "A02",
+            "cat2": "A0207",
+            "cat3": "A02070200",
+            "contentid": "1998564",
+            "contenttypeid": "15",
+            "createdtime": "20150421185827",
+            "dist": "38.40240889811792",
+            "firstimage": "http://tong.visitkorea.or.kr/cms/resource/65/3468365_image2_1.jpg",
+            "firstimage2": "http://tong.visitkorea.or.kr/cms/resource/65/3468365_image3_1.jpg",
+            "cpyrhtDivCd": "Type3",
+            "mapx": "126.9769930325",
+            "mapy": "37.5788222356",
+            "mlevel": "6",
+            "modifiedtime": "20250625162251",
+            "sigungucode": "23",
+            "tel": "1522-2295",
+            "title": "궁중문화축전",
+            "lDongRegnCd": "11",
+            "lDongSignguCd": "110",
+            "lclsSystm1": "EV",
+            "lclsSystm2": "EV01",
+            "lclsSystm3": "EV010400"
+          },
+          {
+            "addr1": "서울특별시 종로구 사직로 161",
+            "addr2": "(세종로)",
+            "zipcode": "03045",
+            "areacode": "1",
+            "cat1": "A02",
+            "cat2": "A0208",
+            "cat3": "A02080100",
+            "contentid": "141661",
+            "contenttypeid": "15",
+            "createdtime": "20070322090000",
+            "dist": "135.70926488835468",
+            "firstimage": "http://tong.visitkorea.or.kr/cms/resource/87/3112987_image2_1.png",
+            "firstimage2": "http://tong.visitkorea.or.kr/cms/resource/87/3112987_image3_1.png",
+            "cpyrhtDivCd": "Type3",
+            "mapx": "126.9767235747",
+            "mapy": "37.5801859611",
+            "mlevel": "6",
+            "modifiedtime": "20240403142835",
+            "sigungucode": "23",
+            "tel": "02-3210-1645~6",
+            "title": "수문장 교대의식",
+            "lDongRegnCd": "11",
+            "lDongSignguCd": "110",
+            "lclsSystm1": "EV",
+            "lclsSystm2": "EV02",
+            "lclsSystm3": "EV020100"
+          },
+          {
+            "addr1": "",
+            "addr2": "",
+            "zipcode": "",
+            "areacode": "1",
+            "cat1": "C01",
+            "cat2": "C0112",
+            "cat3": "C01120001",
+            "contentid": "1952978",
+            "contenttypeid": "25",
+            "createdtime": "20140930025553",
+            "dist": "135.70926488835468",
+            "firstimage": "http://tong.visitkorea.or.kr/cms/resource/42/1568042_image2_1.jpg",
+            "firstimage2": "http://tong.visitkorea.or.kr/cms/resource/42/1568042_image3_1.jpg",
+            "cpyrhtDivCd": "Type3",
+            "mapx": "126.9767235747",
+            "mapy": "37.5801859611",
+            "mlevel": "6",
+            "modifiedtime": "20230810093117",
+            "sigungucode": "23",
+            "tel": "",
+            "title": "궁의 북쪽 자하문 돌아보기",
+            "lDongRegnCd": "11",
+            "lDongSignguCd": "110",
+            "lclsSystm1": "C01",
+            "lclsSystm2": "C0112",
+            "lclsSystm3": "C01120001"
+          }
+        ]
+      },
+      "numOfRows": 3,
+      "pageNo": 1,
+      "totalCount": 9261
+    }
+  }
+}
+✅ 관광공사 API에서 3개 관광지 발견
+🔍 가까운 관광지 조회 요청: 37.5790572, 126.9773101
+🔑 API 키 확인: jXbeQ98Dvep6SzEFu8ul...
+🌐 관광공사 API 호출 중...
+📋 요청 URL: https://apis.data.go.kr/B551011/KorService2/locationBasedList2
+📋 요청 파라미터: {
+  serviceKey: 'jXbeQ98Dvep6SzEFu8ul...',
+  numOfRows: 3,
+  pageNo: 1,
+  MobileOS: 'ETC',
+  MobileApp: 'TourApp',
+  arrange: 'E',
+  mapX: '126.9773101',
+  mapY: '37.5790572',
+  radius: 20000,
+  _type: 'json'
+}
+📋 API 응답 상태: 200
+📋 API 응답 데이터 구조: {
+  "response": {
+    "header": {
+      "resultCode": "0000",
+      "resultMsg": "OK"
+    },
+    "body": {
+      "items": {
+        "item": [
+          {
+            "addr1": "서울특별시 종로구 사직로 161",
+            "addr2": "",
+            "zipcode": "03045",
+            "areacode": "1",
+            "cat1": "A02",
+            "cat2": "A0207",
+            "cat3": "A02070200",
+            "contentid": "1998564",
+            "contenttypeid": "15",
+            "createdtime": "20150421185827",
+            "dist": "38.40240889811792",
+            "firstimage": "http://tong.visitkorea.or.kr/cms/resource/65/3468365_image2_1.jpg",
+            "firstimage2": "http://tong.visitkorea.or.kr/cms/resource/65/3468365_image3_1.jpg",
+            "cpyrhtDivCd": "Type3",
+            "mapx": "126.9769930325",
+            "mapy": "37.5788222356",
+            "mlevel": "6",
+            "modifiedtime": "20250625162251",
+            "sigungucode": "23",
+            "tel": "1522-2295",
+            "title": "궁중문화축전",
+            "lDongRegnCd": "11",
+            "lDongSignguCd": "110",
+            "lclsSystm1": "EV",
+            "lclsSystm2": "EV01",
+            "lclsSystm3": "EV010400"
+          },
+          {
+            "addr1": "서울특별시 종로구 사직로 161",
+            "addr2": "(세종로)",
+            "zipcode": "03045",
+            "areacode": "1",
+            "cat1": "A02",
+            "cat2": "A0208",
+            "cat3": "A02080100",
+            "contentid": "141661",
+            "contenttypeid": "15",
+            "createdtime": "20070322090000",
+            "dist": "135.70926488835468",
+            "firstimage": "http://tong.visitkorea.or.kr/cms/resource/87/3112987_image2_1.png",
+            "firstimage2": "http://tong.visitkorea.or.kr/cms/resource/87/3112987_image3_1.png",
+            "cpyrhtDivCd": "Type3",
+            "mapx": "126.9767235747",
+            "mapy": "37.5801859611",
+            "mlevel": "6",
+            "modifiedtime": "20240403142835",
+            "sigungucode": "23",
+            "tel": "02-3210-1645~6",
+            "title": "수문장 교대의식",
+            "lDongRegnCd": "11",
+            "lDongSignguCd": "110",
+            "lclsSystm1": "EV",
+            "lclsSystm2": "EV02",
+            "lclsSystm3": "EV020100"
+          },
+          {
+            "addr1": "",
+            "addr2": "",
+            "zipcode": "",
+            "areacode": "1",
+            "cat1": "C01",
+            "cat2": "C0112",
+            "cat3": "C01120001",
+            "contentid": "1952978",
+            "contenttypeid": "25",
+            "createdtime": "20140930025553",
+            "dist": "135.70926488835468",
+            "firstimage": "http://tong.visitkorea.or.kr/cms/resource/42/1568042_image2_1.jpg",
+            "firstimage2": "http://tong.visitkorea.or.kr/cms/resource/42/1568042_image3_1.jpg",
+            "cpyrhtDivCd": "Type3",
+            "mapx": "126.9767235747",
+            "mapy": "37.5801859611",
+            "mlevel": "6",
+            "modifiedtime": "20230810093117",
+            "sigungucode": "23",
+            "tel": "",
+            "title": "궁의 북쪽 자하문 돌아보기",
+            "lDongRegnCd": "11",
+            "lDongSignguCd": "110",
+            "lclsSystm1": "C01",
+            "lclsSystm2": "C0112",
+            "lclsSystm3": "C01120001"
+          }
+        ]
+      },
+      "numOfRows": 3,
+      "pageNo": 1,
+      "totalCount": 9261
+    }
+  }
+}
+✅ 관광공사 API에서 3개 관광지 발견
+🔍 가까운 관광지 조회 요청: 37.5790572, 126.9773101
+🔑 API 키 확인: jXbeQ98Dvep6SzEFu8ul...
+🌐 관광공사 API 호출 중...
+📋 요청 URL: https://apis.data.go.kr/B551011/KorService2/locationBasedList2
+📋 요청 파라미터: {
+  serviceKey: 'jXbeQ98Dvep6SzEFu8ul...',
+  numOfRows: 3,
+  pageNo: 1,
+  MobileOS: 'ETC',
+  MobileApp: 'TourApp',
+  arrange: 'E',
+  mapX: '126.9773101',
+  mapY: '37.5790572',
+  radius: 20000,
+  _type: 'json'
+}
+📋 API 응답 상태: 200
+📋 API 응답 데이터 구조: {
+  "response": {
+    "header": {
+      "resultCode": "0000",
+      "resultMsg": "OK"
+    },
+    "body": {
+      "items": {
+        "item": [
+          {
+            "addr1": "서울특별시 종로구 사직로 161",
+            "addr2": "",
+            "zipcode": "03045",
+            "areacode": "1",
+            "cat1": "A02",
+            "cat2": "A0207",
+            "cat3": "A02070200",
+            "contentid": "1998564",
+            "contenttypeid": "15",
+            "createdtime": "20150421185827",
+            "dist": "38.40240889811792",
+            "firstimage": "http://tong.visitkorea.or.kr/cms/resource/65/3468365_image2_1.jpg",
+            "firstimage2": "http://tong.visitkorea.or.kr/cms/resource/65/3468365_image3_1.jpg",
+            "cpyrhtDivCd": "Type3",
+            "mapx": "126.9769930325",
+            "mapy": "37.5788222356",
+            "mlevel": "6",
+            "modifiedtime": "20250625162251",
+            "sigungucode": "23",
+            "tel": "1522-2295",
+            "title": "궁중문화축전",
+            "lDongRegnCd": "11",
+            "lDongSignguCd": "110",
+            "lclsSystm1": "EV",
+            "lclsSystm2": "EV01",
+            "lclsSystm3": "EV010400"
+          },
+          {
+            "addr1": "서울특별시 종로구 사직로 161",
+            "addr2": "(세종로)",
+            "zipcode": "03045",
+            "areacode": "1",
+            "cat1": "A02",
+            "cat2": "A0208",
+            "cat3": "A02080100",
+            "contentid": "141661",
+            "contenttypeid": "15",
+            "createdtime": "20070322090000",
+            "dist": "135.70926488835468",
+            "firstimage": "http://tong.visitkorea.or.kr/cms/resource/87/3112987_image2_1.png",
+            "firstimage2": "http://tong.visitkorea.or.kr/cms/resource/87/3112987_image3_1.png",
+            "cpyrhtDivCd": "Type3",
+            "mapx": "126.9767235747",
+            "mapy": "37.5801859611",
+            "mlevel": "6",
+            "modifiedtime": "20240403142835",
+            "sigungucode": "23",
+            "tel": "02-3210-1645~6",
+            "title": "수문장 교대의식",
+            "lDongRegnCd": "11",
+            "lDongSignguCd": "110",
+            "lclsSystm1": "EV",
+            "lclsSystm2": "EV02",
+            "lclsSystm3": "EV020100"
+          },
+          {
+            "addr1": "",
+            "addr2": "",
+            "zipcode": "",
+            "areacode": "1",
+            "cat1": "C01",
+            "cat2": "C0112",
+            "cat3": "C01120001",
+            "contentid": "1952978",
+            "contenttypeid": "25",
+            "createdtime": "20140930025553",
+            "dist": "135.70926488835468",
+            "firstimage": "http://tong.visitkorea.or.kr/cms/resource/42/1568042_image2_1.jpg",
+            "firstimage2": "http://tong.visitkorea.or.kr/cms/resource/42/1568042_image3_1.jpg",
+            "cpyrhtDivCd": "Type3",
+            "mapx": "126.9767235747",
+            "mapy": "37.5801859611",
+            "mlevel": "6",
+            "modifiedtime": "20230810093117",
+            "sigungucode": "23",
+            "tel": "",
+            "title": "궁의 북쪽 자하문 돌아보기",
+            "lDongRegnCd": "11",
+            "lDongSignguCd": "110",
+            "lclsSystm1": "C01",
+            "lclsSystm2": "C0112",
+            "lclsSystm3": "C01120001"
+          }
+        ]
+      },
+      "numOfRows": 3,
+      "pageNo": 1,
+      "totalCount": 9261
+    }
+  }
+}
+✅ 관광공사 API에서 3개 관광지 발견
+🔍 관광지 상세 정보 조회: 1998564
+📋 상세 API 응답 상태: 200
+📋 상세 API 응답 데이터: {
+  "responseTime": "2025-08-19T16:29:26.285",
+  "resultCode": "10",
+  "resultMsg": "INVALID_REQUEST_PARAMETER_ERROR(defaultYN)"
+}
+❌ 예상하지 못한 상세 API 응답 구조: {
+  responseTime: '2025-08-19T16:29:26.285',
+  resultCode: '10',
+  resultMsg: 'INVALID_REQUEST_PARAMETER_ERROR(defaultYN)'
+}

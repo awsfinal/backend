@@ -7,18 +7,49 @@ const axios = require('axios');
 const BedrockService = require('./services/bedrockService');
 
 const app = express();
-const PORT = process.env.PORT || 5003;
+const PORT = process.env.PORT || 5006;
 
 // BedrockService 인스턴스 생성
 const bedrockService = new BedrockService();
 
 // 미들웨어
-app.use(cors());
+app.use(cors({
+  origin: true,
+  credentials: true
+}));
 app.use(express.json());
-app.use('/uploads', express.static('uploads'));
 
-// 프론트엔드 정적 파일 서빙
-app.use(express.static(path.join(__dirname, '../front/build')));
+// ngrok 브라우저 경고 페이지 우회 및 추가 헤더
+app.use((req, res, next) => {
+  res.header('ngrok-skip-browser-warning', 'true');
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
+  res.header("ngrok-skip-browser-warning", "any");
+  
+  // ngrok 관련 추가 헤더
+  if (req.headers.host && req.headers.host.includes("ngrok")) {
+    res.header("Access-Control-Allow-Credentials", "true");
+    res.header("Vary", "Origin");
+  }
+
+
+  // HTTPS 관련 헤더 추가 (개발 환경에서는 HTTP도 허용)
+  if (process.env.NODE_ENV === "production") {
+    res.header("Content-Security-Policy", "default-src 'self' 'unsafe-inline' 'unsafe-eval' data: https:; font-src 'self' data: https:; img-src 'self' data: https:; connect-src 'self' https:;");
+  } else {
+    res.header("Content-Security-Policy", "default-src 'self' 'unsafe-inline' 'unsafe-eval' data: http: https:; font-src 'self' data: http: https:; img-src 'self' data: http: https:; connect-src 'self' http: https:;");
+  }
+  res.header("X-Content-Type-Options", "nosniff");
+  res.header("X-Frame-Options", "DENY");
+
+  if (req.method === 'OPTIONS') {
+    res.sendStatus(200);
+  } else {
+    next();
+  }
+});
+app.use('/uploads', express.static('uploads'));
 
 // 파일 업로드 설정
 const storage = multer.diskStorage({
@@ -35,6 +66,14 @@ const upload = multer({
   storage: storage,
   limits: {
     fileSize: 10 * 1024 * 1024 // 10MB 제한
+  },
+  fileFilter: (req, file, cb) => {
+    // 이미지 파일만 허용
+    if (file.mimetype.startsWith('image/')) {
+      cb(null, true);
+    } else {
+      cb(new Error('이미지 파일만 업로드 가능합니다.'), false);
+    }
   }
 });
 
@@ -426,11 +465,11 @@ function findBuildingByPolygon(lat, lng) {
   for (const polygon of buildingPolygons) {
     if (isPointInPolygon(lat, lng, polygon)) {
       console.log(`🎯 폴리곤 매칭 성공: ${polygon.name}`);
-      
+
       // 폴리곤 ID를 기존 건물 데이터 ID로 매핑
       const buildingId = mapPolygonToBuilding(polygon.id);
       const buildingData = gyeongbokgungBuildings[buildingId];
-      
+
       if (buildingData) {
         return {
           ...buildingData,
@@ -751,10 +790,10 @@ app.get('/api/search-image/:query', async (req, res) => {
 
   } catch (error) {
     console.error('❌ 카카오 이미지 검색 오류:', error);
-    
+
     if (error.response) {
       console.error('API 응답 오류:', error.response.status, error.response.data);
-      
+
       // 카카오 API 오류 메시지 처리
       if (error.response.status === 401) {
         return res.status(401).json({
@@ -790,7 +829,7 @@ app.post('/api/philosophy/:id', async (req, res) => {
 
     // 건물 정보 조회 (기존 데이터 우선, 없으면 폴리곤 데이터에서 생성)
     let building = gyeongbokgungBuildings[buildingId];
-    
+
     if (!building) {
       // 폴리곤 데이터에서 건물 정보 찾기
       const polygon = buildingPolygons.find(p => p.id === buildingId);
@@ -812,7 +851,7 @@ app.post('/api/philosophy/:id', async (req, res) => {
         console.log(`📍 폴리곤에서 건물 정보 생성: ${building.name}`);
       }
     }
-    
+
     if (!building) {
       return res.status(404).json({
         success: false,
@@ -843,11 +882,11 @@ app.post('/api/philosophy/:id', async (req, res) => {
 
   } catch (error) {
     console.error('❌ 철학 생성 오류:', error);
-    
+
     // 오류 발생 시 폴백 응답
     const building = gyeongbokgungBuildings[req.params.id];
     const buildingName = req.body.buildingName || building?.name || '건물';
-    
+
     res.status(500).json({
       success: false,
       error: '철학 생성 중 오류가 발생했습니다.',
@@ -863,10 +902,6 @@ app.post('/api/philosophy/:id', async (req, res) => {
   }
 });
 
-// React 라우터를 위한 catch-all 핸들러 (API 라우트 이후에 배치)
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../front/build', 'index.html'));
-});
 
 // uploads 폴더 생성
 const fs = require('fs');
@@ -874,13 +909,885 @@ if (!fs.existsSync('uploads')) {
   fs.mkdirSync('uploads');
 }
 
+// 이미지 업로드 API
+app.post('/api/upload', upload.single('image'), (req, res) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({
+        success: false,
+        message: '이미지 파일이 업로드되지 않았습니다.'
+      });
+    }
+
+    console.log('이미지 업로드 성공:', req.file.filename);
+
+    // 업로드된 파일 정보 반환
+    res.json({
+      success: true,
+      message: '이미지 업로드 성공',
+      filename: req.file.filename,
+      originalName: req.file.originalname,
+      size: req.file.size,
+      mimetype: req.file.mimetype,
+      url: `/uploads/${req.file.filename}`, // 클라이언트에서 사용할 URL
+      path: req.file.path // 서버 파일 경로
+    });
+
+  } catch (error) {
+    console.error('이미지 업로드 오류:', error);
+    res.status(500).json({
+      success: false,
+      message: '이미지 업로드 중 오류가 발생했습니다.',
+      error: error.message
+    });
+  }
+});
+
+// MySQL 데이터베이스 연결
+const { testConnection, syncDatabase } = require('./models/database');
+const communityService = require('./services/communityService');
+
+// 사용자 생성 또는 조회
+function getOrCreateUser(userId) {
+  if (!communityData.users[userId]) {
+    communityData.users[userId] = {
+      id: userId,
+      name: '사용자' + userId.slice(-4),
+      level: 'Lv.' + Math.floor(Math.random() * 20 + 1),
+      createdAt: new Date().toISOString()
+    };
+  }
+  return communityData.users[userId];
+}
+
+// 시간 포맷팅
+function formatTime(dateString) {
+  const now = new Date();
+  const date = new Date(dateString);
+  const diffInMinutes = Math.floor((now - date) / (1000 * 60));
+
+  if (diffInMinutes < 1) return '방금 전';
+  if (diffInMinutes < 60) return `${diffInMinutes}분 전`;
+
+  const diffInHours = Math.floor(diffInMinutes / 60);
+  if (diffInHours < 24) return `${diffInHours}시간 전`;
+
+  const diffInDays = Math.floor(diffInHours / 24);
+  if (diffInDays < 7) return `${diffInDays}일 전`;
+
+  return date.toLocaleDateString();
+}
+
+// 커뮤니티 API 라우트들
+
+// 게시글 목록 조회 (MySQL)
+app.get('/api/community/posts/:boardId', async (req, res) => {
+  try {
+    const { boardId } = req.params;
+    const { userId, sort = 'latest' } = req.query;
+
+    console.log(`게시글 목록 조회: ${boardId}, 사용자: ${userId}, 정렬: ${sort}`);
+
+    const posts = await communityService.getPosts(boardId, userId, sort);
+
+    // 응답 데이터 포맷팅
+    const formattedPosts = posts.map(post => ({
+      id: post.id,
+      boardId: post.boardId,
+      title: post.title,
+      content: post.content,
+      category: post.category,
+      authorId: post.authorId,
+      author: post.author,
+      authorLevel: post.authorLevel,
+      likes: post.likes,
+      views: post.views,
+      images: post.images,
+      likedBy: post.likedBy,
+      createdAt: post.createdAt,
+      timeFormatted: formatTime(post.createdAt),
+      comments: post.comments || [],
+      commentsCount: post.comments ? post.comments.length : 0
+    }));
+
+    console.log(`게시글 목록 응답: ${formattedPosts.length}개`);
+
+    res.json({
+      success: true,
+      posts: formattedPosts,
+      total: formattedPosts.length
+    });
+
+  } catch (error) {
+    console.error('게시글 목록 조회 오류:', error);
+    res.status(500).json({
+      success: false,
+      message: '게시글 목록을 불러올 수 없습니다.'
+    });
+  }
+});
+
+// 게시글 상세 조회 (MySQL)
+app.get('/api/community/post/:postId', async (req, res) => {
+  try {
+    const { postId } = req.params;
+
+    console.log(`게시글 상세 조회: ${postId}`);
+
+    const post = await communityService.getPostById(postId);
+
+    if (!post) {
+      return res.status(404).json({
+        success: false,
+        message: '게시글을 찾을 수 없습니다.'
+      });
+    }
+
+    // 응답 데이터 포맷팅
+    const formattedPost = {
+      id: post.id,
+      boardId: post.boardId,
+      title: post.title,
+      content: post.content,
+      category: post.category,
+      authorId: post.authorId,
+      author: post.author,
+      authorLevel: post.authorLevel,
+      likes: post.likes,
+      views: post.views,
+      images: post.images,
+      likedBy: post.likedBy,
+      createdAt: post.createdAt,
+      timeFormatted: formatTime(post.createdAt),
+      comments: post.comments ? post.comments.map(comment => ({
+        id: comment.id,
+        content: comment.content,
+        author: comment.author,
+        authorLevel: comment.authorLevel,
+        authorId: comment.authorId,
+        likes: comment.likes,
+        createdAt: comment.createdAt,
+        timeFormatted: formatTime(comment.createdAt)
+      })) : []
+    };
+
+    console.log(`게시글 상세 응답: ${post.title}`);
+
+    res.json({
+      success: true,
+      post: formattedPost
+    });
+
+  } catch (error) {
+    console.error('게시글 조회 오류:', error);
+    res.status(500).json({
+      success: false,
+      message: '게시글을 불러올 수 없습니다.'
+    });
+  }
+});
+
+// 게시글 작성 (MySQL)
+app.post('/api/community/posts', async (req, res) => {
+  try {
+    const { boardId, title, content, category, userId, images, author, authorLevel } = req.body;
+
+    if (!boardId || !title || !content || !userId) {
+      return res.status(400).json({
+        success: false,
+        message: '필수 정보가 누락되었습니다.'
+      });
+    }
+
+    console.log(`게시글 작성: ${boardId}, 사용자: ${userId}, 제목: ${title}`);
+
+    const postData = {
+      boardId,
+      userId,
+      title: title.trim(),
+      content: content.trim(),
+      category: category || '일반',
+      author: author || '사용자' + userId.slice(-4),
+      authorLevel: authorLevel || 'Lv.' + Math.floor(Math.random() * 20 + 1),
+      images: images || []
+    };
+
+    const newPost = await communityService.createPost(postData);
+
+    console.log(`게시글 작성 완료: ${newPost.id}`);
+
+    res.json({
+      success: true,
+      post: {
+        id: newPost.id,
+        boardId: newPost.boardId,
+        title: newPost.title,
+        content: newPost.content,
+        category: newPost.category,
+        authorId: newPost.authorId,
+        author: newPost.author,
+        authorLevel: newPost.authorLevel,
+        likes: newPost.likes,
+        views: newPost.views,
+        images: newPost.images,
+        likedBy: newPost.likedBy,
+        createdAt: newPost.createdAt,
+        timeFormatted: formatTime(newPost.createdAt)
+      },
+      message: '게시글이 작성되었습니다.'
+    });
+
+  } catch (error) {
+    console.error('게시글 작성 오류:', error);
+    res.status(500).json({
+      success: false,
+      message: '게시글 작성에 실패했습니다.'
+    });
+  }
+});
+
+// 댓글 작성
+app.post('/api/community/comments', (req, res) => {
+  try {
+    const { postId, content, userId } = req.body;
+
+    if (!postId || !content || !userId) {
+      return res.status(400).json({
+        success: false,
+        message: '필수 정보가 누락되었습니다.'
+      });
+    }
+
+    const post = communityData.posts.find(p => p.id === parseInt(postId));
+    if (!post) {
+      return res.status(404).json({
+        success: false,
+        message: '게시글을 찾을 수 없습니다.'
+      });
+    }
+
+    const user = getOrCreateUser(userId);
+
+    const newComment = {
+      id: communityData.nextCommentId++,
+      content: content.trim(),
+      authorId: userId,
+      author: user.name,
+      authorLevel: user.level,
+      createdAt: new Date().toISOString(),
+      likes: 0
+    };
+
+    post.comments.push(newComment);
+
+    res.json({
+      success: true,
+      comment: {
+        ...newComment,
+        timeFormatted: formatTime(newComment.createdAt)
+      },
+      message: '댓글이 작성되었습니다.'
+    });
+
+  } catch (error) {
+    console.error('댓글 작성 오류:', error);
+    res.status(500).json({
+      success: false,
+      message: '댓글 작성에 실패했습니다.'
+    });
+  }
+});
+
+// 좋아요 토글
+app.post('/api/community/like/:postId', (req, res) => {
+  try {
+    const { postId } = req.params;
+    const { userId } = req.body;
+
+    if (!userId) {
+      return res.status(400).json({
+        success: false,
+        message: '사용자 정보가 필요합니다.'
+      });
+    }
+
+    const post = communityData.posts.find(p => p.id === parseInt(postId));
+    if (!post) {
+      return res.status(404).json({
+        success: false,
+        message: '게시글을 찾을 수 없습니다.'
+      });
+    }
+
+    if (!post.likedBy) {
+      post.likedBy = [];
+    }
+
+    const likedIndex = post.likedBy.indexOf(userId);
+    let isLiked = false;
+
+    if (likedIndex > -1) {
+      post.likedBy.splice(likedIndex, 1);
+      post.likes -= 1;
+      isLiked = false;
+    } else {
+      post.likedBy.push(userId);
+      post.likes += 1;
+      isLiked = true;
+    }
+
+    res.json({
+      success: true,
+      likes: post.likes,
+      isLiked: isLiked,
+      message: isLiked ? '좋아요를 눌렀습니다.' : '좋아요를 취소했습니다.'
+    });
+
+  } catch (error) {
+    console.error('좋아요 처리 오류:', error);
+    res.status(500).json({
+      success: false,
+      message: '좋아요 처리에 실패했습니다.'
+    });
+  }
+});
+
+// 게시판별 게시글 수 조회
+app.get('/api/community/stats/:boardId', (req, res) => {
+  try {
+    const { boardId } = req.params;
+    const { userId } = req.query;
+
+    let count = 0;
+
+    if (boardId === 'my-posts' && userId) {
+      count = communityData.posts.filter(post => post.authorId === userId).length;
+    } else if (boardId === 'commented-posts' && userId) {
+      count = communityData.posts.filter(post =>
+        post.comments.some(comment => comment.authorId === userId)
+      ).length;
+    } else {
+      count = communityData.posts.filter(post => post.boardId === boardId).length;
+    }
+
+    res.json({
+      success: true,
+      boardId,
+      count
+    });
+
+  } catch (error) {
+    console.error('게시판 통계 조회 오류:', error);
+    res.status(500).json({
+      success: false,
+      message: '통계를 불러올 수 없습니다.'
+    });
+  }
+});
+
+// 커뮤니티 데이터 전체 조회 (디버깅용)
+app.get('/api/community/debug', (req, res) => {
+  res.json({
+    success: true,
+    data: communityData,
+    stats: {
+      totalPosts: communityData.posts.length,
+      totalUsers: Object.keys(communityData.users).length,
+      postsByBoard: communityData.posts.reduce((acc, post) => {
+        acc[post.boardId] = (acc[post.boardId] || 0) + 1;
+        return acc;
+      }, {})
+    }
+  });
+});
+
+// 나머지 MySQL API들 추가
+// 댓글 작성 (MySQL)
+app.post('/api/community/comments', async (req, res) => {
+  try {
+    const { postId, content, userId, author, authorLevel } = req.body;
+
+    if (!postId || !content || !userId) {
+      return res.status(400).json({
+        success: false,
+        message: '필수 정보가 누락되었습니다.'
+      });
+    }
+
+    console.log(`댓글 작성: 게시글 ${postId}, 사용자: ${userId}`);
+
+    const commentData = {
+      postId,
+      userId,
+      content: content.trim(),
+      author: author || '사용자' + userId.slice(-4),
+      authorLevel: authorLevel || 'Lv.' + Math.floor(Math.random() * 20 + 1)
+    };
+
+    const newComment = await communityService.createComment(commentData);
+
+    console.log(`댓글 작성 완료: ${newComment.id}`);
+
+    res.json({
+      success: true,
+      comment: {
+        id: newComment.id,
+        content: newComment.content,
+        author: newComment.author,
+        authorLevel: newComment.authorLevel,
+        authorId: newComment.authorId,
+        likes: newComment.likes,
+        createdAt: newComment.createdAt,
+        timeFormatted: formatTime(newComment.createdAt)
+      },
+      message: '댓글이 작성되었습니다.'
+    });
+
+  } catch (error) {
+    console.error('댓글 작성 오류:', error);
+    res.status(500).json({
+      success: false,
+      message: '댓글 작성에 실패했습니다.'
+    });
+  }
+});
+
+// 좋아요 토글 (MySQL)
+app.post('/api/community/like/:postId', async (req, res) => {
+  try {
+    const { postId } = req.params;
+    const { userId } = req.body;
+
+    if (!userId) {
+      return res.status(400).json({
+        success: false,
+        message: '사용자 정보가 필요합니다.'
+      });
+    }
+
+    console.log(`좋아요 토글: 게시글 ${postId}, 사용자: ${userId}`);
+
+    const likes = await communityService.toggleLike(postId, userId);
+
+    console.log(`좋아요 토글 완료: ${likes}개`);
+
+    res.json({
+      success: true,
+      likes: likes,
+      message: '좋아요가 처리되었습니다.'
+    });
+
+  } catch (error) {
+    console.error('좋아요 처리 오류:', error);
+    res.status(500).json({
+      success: false,
+      message: '좋아요 처리에 실패했습니다.'
+    });
+  }
+});
+
+// 게시판별 게시글 수 조회 (MySQL)
+app.get('/api/community/stats/:boardId', async (req, res) => {
+  try {
+    const { boardId } = req.params;
+    const { userId } = req.query;
+
+    console.log(`게시판 통계 조회: ${boardId}, 사용자: ${userId}`);
+
+    const count = await communityService.getPostCount(boardId, userId);
+
+    console.log(`게시판 통계 응답: ${count}개`);
+
+    res.json({
+      success: true,
+      boardId,
+      count
+    });
+
+  } catch (error) {
+    console.error('게시판 통계 조회 오류:', error);
+    res.status(500).json({
+      success: false,
+      message: '통계를 불러올 수 없습니다.'
+    });
+  }
+});
+
+// 테스트 엔드포인트 추가
+app.get('/api/test', async (req, res) => {
+  try {
+    const stats = await communityService.getStats();
+    res.json({
+      success: true,
+      message: '백엔드 서버가 정상적으로 작동 중입니다.',
+      timestamp: new Date().toISOString(),
+      database: 'MySQL (AWS RDS)',
+      communityData: stats
+    });
+  } catch (error) {
+    res.json({
+      success: true,
+      message: '백엔드 서버가 정상적으로 작동 중입니다.',
+      timestamp: new Date().toISOString(),
+      database: 'MySQL 연결 실패 - 메모리 모드',
+      error: error.message
+    });
+  }
+});
+
+// GPS API 엔드포인트 추가 (MainPage에서 사용)
+app.post('/api/gps', (req, res) => {
+  try {
+    const { latitude, longitude } = req.body;
+
+    console.log('🔍 GPS 기반 건물 인식 요청:', { latitude, longitude });
+
+    // 실제 건물 인식 로직 (폴리곤 매칭)
+    let recognizedBuilding = null;
+    let minDistance = Infinity;
+
+    // 경복궁 건물들과 거리 계산
+    for (const [buildingId, building] of Object.entries(gyeongbokgungBuildings)) {
+      if (building.coordinates) {
+        const distance = calculateDistance(
+          latitude, longitude,
+          building.coordinates.lat, building.coordinates.lng
+        );
+        
+        console.log(`📏 ${building.name} 거리: ${distance.toFixed(2)}m`);
+        
+        // 가장 가까운 건물 찾기 (100m 이내)
+        if (distance < 100 && distance < minDistance) {
+          minDistance = distance;
+          recognizedBuilding = {
+            buildingId: buildingId,
+            name: building.name,
+            distance: distance
+          };
+        }
+      }
+    }
+
+    if (recognizedBuilding) {
+      console.log('✅ 건물 인식 성공:', recognizedBuilding);
+      res.json({
+        success: true,
+        message: '건물 인식 완료',
+        buildingId: recognizedBuilding.buildingId,
+        buildingName: recognizedBuilding.name,
+        distance: recognizedBuilding.distance,
+        location: {
+          latitude: parseFloat(latitude),
+          longitude: parseFloat(longitude)
+        }
+      });
+    } else {
+      console.log('❌ 인식된 건물 없음 - 기본값 사용');
+      res.json({
+        success: true,
+        message: '인식된 건물이 없습니다',
+        buildingId: 'gyeonghoeru', // 기본값
+        buildingName: '경회루',
+        distance: null,
+        location: {
+          latitude: parseFloat(latitude),
+          longitude: parseFloat(longitude)
+        }
+      });
+    }
+  } catch (error) {
+    console.error('GPS 처리 오류:', error);
+    res.status(500).json({
+      success: false,
+      message: 'GPS 처리 중 오류가 발생했습니다.'
+    });
+  }
+});
+
+// 두 좌표 간 거리 계산 함수 (미터 단위)
+function calculateDistance(lat1, lon1, lat2, lon2) {
+  const R = 6371e3; // 지구 반지름 (미터)
+  const φ1 = lat1 * Math.PI/180;
+  const φ2 = lat2 * Math.PI/180;
+  const Δφ = (lat2-lat1) * Math.PI/180;
+  const Δλ = (lon2-lon1) * Math.PI/180;
+
+  const a = Math.sin(Δφ/2) * Math.sin(Δφ/2) +
+          Math.cos(φ1) * Math.cos(φ2) *
+          Math.sin(Δλ/2) * Math.sin(Δλ/2);
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+
+  return R * c;
+}
+
+// 커뮤니티 데이터 전체 조회 (디버깅용)
+app.get('/api/community/debug', async (req, res) => {
+  try {
+    const stats = await communityService.getStats();
+    res.json({
+      success: true,
+      message: 'MySQL 데이터베이스 연결됨',
+      stats: stats
+    });
+  } catch (error) {
+    res.json({
+      success: false,
+      message: 'MySQL 연결 실패',
+      error: error.message
+    });
+  }
+});
+
 // 서버 시작
-app.listen(PORT, () => {
+app.listen(PORT, '0.0.0.0', async () => {
   console.log(`경복궁 건물 인식 API 서버가 포트 ${PORT}에서 실행 중입니다.`);
   console.log(`API 엔드포인트:`);
+  console.log(`- GET /api/test : 서버 연결 테스트`);
+  console.log(`- GET /api/community/debug : 커뮤니티 데이터 디버깅`);
   console.log(`- POST /api/check-location : 위치 확인`);
   console.log(`- POST /api/analyze-photo : 사진 분석`);
   console.log(`- GET /api/building/:id : 건물 정보 조회`);
   console.log(`- GET /api/buildings : 모든 건물 목록`);
   console.log(`- POST /api/philosophy/:id : 건물 철학 생성 (AWS Bedrock)`);
+  console.log(`- GET /api/community/posts/:boardId : 게시글 목록`);
+  console.log(`- GET /api/community/post/:postId : 게시글 상세`);
+  console.log(`- POST /api/community/posts : 게시글 작성`);
+  console.log(`- POST /api/community/comments : 댓글 작성`);
+  console.log(`- POST /api/community/like/:postId : 좋아요 토글`);
+  console.log(`- GET /api/community/stats/:boardId : 게시판 통계`);
+
+  // MySQL 데이터베이스 연결 테스트
+  console.log('\n=== MySQL 데이터베이스 연결 테스트 ===');
+  const isConnected = await testConnection();
+
+  if (isConnected) {
+    console.log('✅ MySQL 데이터베이스 연결 성공');
+
+    // 테이블 동기화
+    const isSynced = await syncDatabase();
+    if (isSynced) {
+      console.log('✅ 데이터베이스 테이블 동기화 완료');
+
+      // 초기 통계
+      try {
+        const stats = await communityService.getStats();
+        console.log('📊 현재 데이터베이스 상태:');
+        console.log(`   - 총 게시글: ${stats.totalPosts}개`);
+        console.log(`   - 총 사용자: ${stats.totalUsers}명`);
+        console.log(`   - 총 댓글: ${stats.totalComments}개`);
+        console.log(`   - 게시판별 게시글:`, stats.postsByBoard);
+      } catch (error) {
+        console.log('📊 통계 조회 실패:', error.message);
+      }
+    } else {
+      console.log('❌ 데이터베이스 테이블 동기화 실패');
+    }
+  } else {
+    console.log('❌ MySQL 데이터베이스 연결 실패 - 메모리 모드로 실행');
+  }
+});
+
+// 관광지 관련 API 엔드포인트들
+
+// 서울 관광지 데이터 초기화 (관리자용)
+app.post('/api/tourist-spots/init', async (req, res) => {
+  try {
+    console.log('🏛️ 서울 관광지 데이터 초기화 요청');
+    const result = await communityService.saveSeoulTouristSpots();
+    
+    res.json({
+      success: true,
+      message: '서울 관광지 데이터 초기화 완료',
+      data: result
+    });
+  } catch (error) {
+    console.error('관광지 데이터 초기화 오류:', error);
+    res.status(500).json({
+      success: false,
+      message: '관광지 데이터 초기화 실패',
+      error: error.message
+    });
+  }
+});
+
+// GPS 기반 가까운 관광지 조회 (메인 페이지용)
+app.get('/api/tourist-spots/nearby', async (req, res) => {
+  try {
+    const { latitude, longitude, limit = 3 } = req.query;
+    
+    if (!latitude || !longitude) {
+      return res.status(400).json({
+        success: false,
+        message: 'GPS 좌표가 필요합니다.'
+      });
+    }
+
+    console.log(`🔍 가까운 관광지 조회 요청: ${latitude}, ${longitude}`);
+    
+    const nearbySpots = await communityService.getNearbyTouristSpots(
+      parseFloat(latitude), 
+      parseFloat(longitude), 
+      parseInt(limit)
+    );
+
+    res.json({
+      success: true,
+      message: '가까운 관광지 조회 완료',
+      data: nearbySpots,
+      count: nearbySpots.length
+    });
+  } catch (error) {
+    console.error('가까운 관광지 조회 오류:', error);
+    res.status(500).json({
+      success: false,
+      message: '가까운 관광지 조회 실패',
+      error: error.message
+    });
+  }
+});
+
+// 관광지 상세 정보 조회 (contentId 기반)
+app.get('/api/tourist-spots/:contentId', async (req, res) => {
+  try {
+    const { contentId } = req.params;
+    
+    if (!contentId) {
+      return res.status(400).json({
+        success: false,
+        message: 'contentId가 필요합니다.'
+      });
+    }
+
+    console.log(`🔍 관광지 상세 정보 조회: ${contentId}`);
+    
+    // 한국관광공사 API에서 상세 정보 가져오기
+    const serviceKey = process.env.TOUR_API_KEY;
+    const detailUrl = `http://apis.data.go.kr/B551011/KorService1/detailCommon1`;
+    
+    const params = {
+      serviceKey: serviceKey,
+      numOfRows: 10,
+      pageNo: 1,
+      MobileOS: 'ETC',
+      MobileApp: 'TourApp',
+      contentId: contentId,
+      defaultYN: 'Y',
+      firstImageYN: 'Y',
+      areacodeYN: 'Y',
+      catcodeYN: 'Y',
+      addrinfoYN: 'Y',
+      mapinfoYN: 'Y',
+      overviewYN: 'Y',
+      _type: 'json'
+    };
+
+    const response = await axios.get(detailUrl, { params });
+    
+    if (response.data.response.header.resultCode === '0000') {
+      const items = response.data.response.body.items.item;
+      
+      if (items && items.length > 0) {
+        const spot = items[0];
+        
+        // 추가 정보 API 호출 (전화번호, 이용시간 등)
+        const introUrl = `http://apis.data.go.kr/B551011/KorService1/detailIntro1`;
+        const introParams = {
+          serviceKey: serviceKey,
+          numOfRows: 10,
+          pageNo: 1,
+          MobileOS: 'ETC',
+          MobileApp: 'TourApp',
+          contentId: contentId,
+          contentTypeId: spot.contenttypeid,
+          _type: 'json'
+        };
+
+        let introData = null;
+        try {
+          const introResponse = await axios.get(introUrl, { params: introParams });
+          if (introResponse.data.response.header.resultCode === '0000') {
+            const introItems = introResponse.data.response.body.items.item;
+            if (introItems && introItems.length > 0) {
+              introData = introItems[0];
+            }
+          }
+        } catch (introError) {
+          console.error('추가 정보 조회 오류:', introError);
+        }
+
+        // 상세 정보 구성
+        const detailInfo = {
+          contentId: spot.contentid,
+          title: spot.title,
+          address: spot.addr1,
+          addressDetail: spot.addr2 || '',
+          tel: spot.tel || introData?.infocenter || '정보 없음',
+          overview: spot.overview || '상세 설명이 없습니다.',
+          image: spot.firstimage || spot.firstimage2 || '',
+          mapX: spot.mapx,
+          mapY: spot.mapy,
+          contentTypeId: spot.contenttypeid,
+          
+          // 추가 정보 (introData에서)
+          usetime: introData?.usetime || '정보 없음',
+          restdate: introData?.restdate || '정보 없음',
+          parking: introData?.parking || '정보 없음',
+          usefee: introData?.usefee || '정보 없음',
+          homepage: introData?.homepage || ''
+        };
+
+        res.json({
+          success: true,
+          message: '관광지 상세 정보 조회 완료',
+          data: detailInfo
+        });
+      } else {
+        res.status(404).json({
+          success: false,
+          message: '해당 관광지 정보를 찾을 수 없습니다.'
+        });
+      }
+    } else {
+      res.status(500).json({
+        success: false,
+        message: 'API 호출 실패',
+        error: response.data.response.header.resultMsg
+      });
+    }
+  } catch (error) {
+    console.error('관광지 상세 정보 조회 오류:', error);
+    res.status(500).json({
+      success: false,
+      message: '관광지 상세 정보 조회 실패',
+      error: error.message
+    });
+  }
+});// 관광지 통계 조회
+app.get('/api/tourist-spots/stats', async (req, res) => {
+  try {
+    const count = await communityService.getTouristSpotCount();
+    
+    res.json({
+      success: true,
+      message: '관광지 통계 조회 완료',
+      data: {
+        totalCount: count
+      }
+    });
+  } catch (error) {
+    console.error('관광지 통계 조회 오류:', error);
+    res.status(500).json({
+      success: false,
+      message: '관광지 통계 조회 실패',
+      error: error.message
+    });
+  }
+});
+
+// 프론트엔드 정적 파일 서빙 (API 라우트 뒤에 배치)
+app.use(express.static(path.join(__dirname, '../front/build')));
+
+// SPA를 위한 캐치올 라우트 (모든 API 라우트 뒤에 배치)
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../front/build', 'index.html'));
 });
